@@ -1,6 +1,6 @@
 # My-termux-zsh
 
-I was tired of manually installing Zsh, fonts, themes, and plugins every time I reset Termux. I wanted a "God-Mode" setup that installs everything in one command.
+I was tired of manually installing Zsh, fonts, themes, and plugins every time I reset Termux. I wanted a "Ducking" setup that installs everything in one command.
 
 So I built this.
 
