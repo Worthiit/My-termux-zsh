@@ -95,11 +95,19 @@ xport() {
 }
 
 setlook() {
-    echo -e "\033[1;32m>>> DOWNLOADING FONT MANAGER...\033[0m"
-    curl -fsSL https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-nf -o $PREFIX/bin/termux-nf
-    chmod +x $PREFIX/bin/termux-nf
-    echo -e "\033[1;32m>>> LAUNCHING SELECTOR...\033[0m"
+    if [ ! -f "$PREFIX/bin/termux-nf" ]; then
+        curl -fsSL https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-nf -o $PREFIX/bin/termux-nf
+        chmod +x $PREFIX/bin/termux-nf
+    fi
     termux-nf
+}
+
+setstyle() {
+    termux-style
+}
+
+setprompt() {
+    p10k configure
 }
 
 ftext() { grep -iIHrn --color=always "$1" . | less -r; }
