@@ -43,3 +43,14 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/m
 2.  **Async:** `.zshrc` now uses `wait"0"` for heavy plugins, so the prompt appears faster
 3.  **Style:** Added `setlook` command. Type it to change fonts anytime, now don't tell me that you could do it with Termux setting too ik that buddy
 4. **Private:** Made all my other repos private cuz yeah it was necessary 
+
+
+
+## Credits
+This script is mine which is a simple code/commands, there is no need to even take credit BUT
+The font (`setlook`) and color (`setstyle`) management scripts are modified versions of tools originally created by **Md arif** ( ig yes )
+
+- Original Project: [termux-desktop](https://github.com/sabamdarif/termux-desktop)
+- Author: [sabamdarif](https://github.com/sabamdarif)
+
+Respect to the open-source community.
