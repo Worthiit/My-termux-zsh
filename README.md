@@ -5,7 +5,7 @@ I was tired of manually installing Zsh, fonts, themes, and plugins every time I 
 So I built this.
 
 **It Includes:**
-- **Zsh + Oh-My-Zsh** (The brain/cool-shi)
+- **Zsh + Zinit** (The brain/cool-shi)
 - **Powerlevel10k** (The look)
 - **Meslo Nerd Font** (The icons)
 - **Zinit Plugin Manager** (The speed)
