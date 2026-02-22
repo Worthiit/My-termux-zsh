@@ -41,4 +41,4 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/m
 1.  `motd.sh` now uses `dpkg` instead of `pkg`. It will load instantly.
 2.  **Async:** `.zshrc` now uses `wait"0"` for heavy plugins, so the prompt appears faster
 3.  **Style:** Added `setlook` command. Type it to change fonts anytime, now don't tell me that you could do it with Termux setting too ik that buddy
-4. **Private** Made all my other repos private cuz yeah it was necessary 
+4. **Private:** Made all my other repos private cuz yeah it was necessary 
