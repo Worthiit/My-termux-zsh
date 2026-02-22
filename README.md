@@ -5,11 +5,11 @@ I was tired of manually installing Zsh, fonts, themes, and plugins every time I 
 So I built this.
 
 **It Includes:**
-- **Zsh + Oh-My-Zsh** (The brain)
-- **Powerlevel10k** (The look)
+- **Zsh + Oh-My-Zsh** (The brain/cool-shi)
+- **Powerlevel10k** (The look/colors/glass)
 - **Meslo Nerd Font** (The icons)
 - **Zinit Plugin Manager** (The speed)
-- **Reinhart Dashboard** (Custom MOTD with live system stats)
+- **Simple Dashboard** (Custom MOTD with live system stats)
 - **Auto-Suggestions & Syntax Highlighting** (The cheat codes)
 - **Font & Color Switcher** (Type `setlook` to change style)
 
