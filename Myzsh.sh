@@ -11,7 +11,7 @@ bar() {
 }
 
 clear
-echo -e "\n${C_CYN}>>> REINHART INSTALLER // RELAX, I'M ON IT.${C_RST}\n"
+echo -e "\n${C_CYN}>>> Myzsh INSTALLER // RELAX, I'M ON IT.${C_RST}\n"
 
 # 1. Update & Dependencies
 bar "Updating Termux repositories"
@@ -25,7 +25,6 @@ mkdir -p ~/.termux ~/.config/neofetch
 bar "Setting up directories"
 
 # 3. Fetch Configs from GitHub
-# REPLACE THESE VARIABLES WITH YOUR REPO DETAILS
 REPO_USER="Worthiit"
 REPO_NAME="My-termux-zsh"
 BRANCH="main"
@@ -64,10 +63,10 @@ color15=#e6e6e6
 EOF
 termux-reload-settings
 
-# 5. Cleanup & Switch
+# 5. Cleanup & Switch cuz it's my zsh bruh
 rm -f ~/.bashrc
 bar "Cleaning up trash"
 
-echo -e "\n${C_GRN}>>> DONE. SWITCHING PROTOCOLS.${C_RST}"
+echo -e "\n${C_GRN}>>> DONE. So Now let's have a look at this shi.${C_RST}"
 chsh -s zsh
 zsh
