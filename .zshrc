@@ -95,15 +95,11 @@ xport() {
 }
 
 setlook() {
-    if [ ! -f "$PREFIX/bin/termux-nf" ]; then
-        curl -fsSL https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-nf -o $PREFIX/bin/termux-nf
-        chmod +x $PREFIX/bin/termux-nf
-    fi
     termux-nf
 }
 
 setstyle() {
-    termux-style
+    termux-color
 }
 
 setprompt() {
