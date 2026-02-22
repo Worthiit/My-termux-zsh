@@ -14,7 +14,7 @@ user="Reinhart"
 model=$(getprop ro.product.model 2>/dev/null || echo "Android")
 kernel=$(uname -r | cut -d'-' -f1)
 uptime=$(uptime | awk -F'( |,|:)+' '{if ($7=="min") print $6"m"; else print $6"h "$7"m"}')
-pkgs=$(pkg list-installed 2>/dev/null | wc -l)
+pkgs=$(dpkg --get-selections 2>/dev/null | grep -v deinstall | wc -l)
 shell_v=$(zsh --version | awk '{print $2}')
 storage=$(df -h /data 2>/dev/null | awk 'NR==2 {print $3 "/" $2}')
 
