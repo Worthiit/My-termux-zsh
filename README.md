@@ -6,7 +6,7 @@ So I built this.
 
 **It Includes:**
 - **Zsh + Oh-My-Zsh** (The brain/cool-shi)
-- **Powerlevel10k** (The look/colors/glass)
+- **Powerlevel10k** (The look)
 - **Meslo Nerd Font** (The icons)
 - **Zinit Plugin Manager** (The speed)
 - **Simple Dashboard** (Custom MOTD with live system stats)
