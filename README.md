@@ -1,5 +1,9 @@
 # My-termux-zsh
 
+
+# it's all messed up so I'll fix  tomorrow 
+
+
 I was tired of manually installing Zsh, fonts, themes, and plugins every time I reset Termux. I wanted a "Ducking" setup that installs everything in one command. ( it's for personal use but if you like ,you can also use it )
 
 So I built this.
