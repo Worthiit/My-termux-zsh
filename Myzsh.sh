@@ -11,7 +11,7 @@ bar() {
 }
 
 clear
-echo -e "\n${C_CYN}>>> Myzsh INSTALLER // RELAX, I'M ON IT.${C_RST}\n"
+echo -e "\n${C_CYN}>>> MYZSH INSTALLER // RELAX, I'M ON IT.${C_RST}\n"
 
 # 1. Update & Dependencies
 bar "Updating Termux repositories"
@@ -67,6 +67,6 @@ termux-reload-settings
 rm -f ~/.bashrc
 bar "Cleaning up trash"
 
-echo -e "\n${C_GRN}>>> DONE. So Now let's have a look at this shi.${C_RST}"
+echo -e "\n${C_GRN}>>> DONE. SO NOW LET'S HAVE A LOOK AT THIS SHIt.${C_RST}"
 chsh -s zsh
 zsh
