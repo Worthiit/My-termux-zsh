@@ -11,11 +11,11 @@ So I built this.
 - **Zinit Plugin Manager** (The speed)
 - **Simple Dashboard** (Custom MOTD with live system stats)
 - **Auto-Suggestions & Syntax Highlighting** (The cheat codes)
-- **Font & Color Switcher** (Type `setlook` to change style)
-
+- **Font, Color & Prompt Switchers** (For customization)
+- 
 ## Installation
 
-One line cuz why not ?
+One line command cuz why not ?
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.sh)"
@@ -26,14 +26,15 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/m
 | Command | Action |
 | :--- | :--- |
 | `up` | Update & Upgrade System |
-| `setlook` | Change Fonts & Colors instantly |
+| `setlook` | Change Fonts instantly |
+| `setstyle`| Change Color Scheme |
+| `setprompt`| Configure the Zsh prompt style |
 | `runclip` | Run Python script directly from Clipboard |
 | `copyclip` | Copy file content to Clipboard |
 | `reveal` | Show hidden IP details |
 | `g` / `gp` / `gl` | Git, Git Push, Git Pull |
 | `texpo` | Backup Tmux to Downloads |
 | `..` | Go back one folder |
-
 
 
 ### Summary of Changes ( i mean i just updated again cuz old one sucks )
