@@ -3,6 +3,7 @@
 
 # it's all messed up so I'll fix  tomorrow 
 
+arrow keys ain't working 
 
 I was tired of manually installing Zsh, fonts, themes, and plugins every time I reset Termux. I wanted a "Ducking" setup that installs everything in one command. ( it's for personal use but if you like ,you can also use it )
 
