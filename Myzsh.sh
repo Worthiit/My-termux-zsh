@@ -13,14 +13,12 @@ bar() {
 clear
 echo -e "\n${C_CYN}>>> MYZSH INSTALLER // RELAX, I'M ON IT.${C_RST}\n"
 
-bar "Updating Termux repositories"
-pkg update -y >/dev/null 2>&1 && pkg upgrade -y >/dev/null 2>&1
+bar "Updating and installing dependencies"
+pkg update -y -o Dpkg::Options::="--force-confnew" >/dev/null 2>&1
+pkg install -y -o Dpkg::Options::="--force-confnew" zsh git gh curl wget termux-api ncurses-utils make clang tar bat grep eza fzf openssl python fontconfig termux-styling >/dev/null 2>&1
 
-bar "Grabbing necessary binaries (git, gh, zsh, tools)"
-pkg install -y zsh git gh curl wget termux-api ncurses-utils make clang tar bat grep eza fzf openssl python fontconfig termux-styling >/dev/null 2>&1
-
-mkdir -p ~/.termux ~/.config/neofetch
 bar "Setting up directories"
+mkdir -p ~/.termux ~/.config/neofetch
 
 REPO_USER="Worthiit"
 REPO_NAME="My-termux-zsh"
@@ -36,6 +34,7 @@ curl -fsSL "$BASE_URL/.p10k.zsh" -o ~/.p10k.zsh
 curl -fsSL "$BASE_URL/motd.sh" -o ~/motd.sh
 chmod +x ~/motd.sh
 
+bar "Writing color scheme"
 cat > ~/.termux/colors.properties << 'EOF'
 background=#101216
 foreground=#d0d0d0
@@ -59,8 +58,8 @@ color15=#e6e6e6
 EOF
 termux-reload-settings
 
-rm -f ~/.bashrc
 bar "Cleaning up trash"
+rm -f ~/.bashrc
 
 echo -e "\n${C_GRN}>>> DONE. SO NOW LET'S HAVE A LOOK AT THIS SHIt.${C_RST}"
 chsh -s zsh
