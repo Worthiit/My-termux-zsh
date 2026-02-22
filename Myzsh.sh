@@ -15,7 +15,7 @@ echo -e "\n${C_CYN}>>> MYZSH INSTALLER // RELAX, I'M ON IT.${C_RST}\n"
 
 bar "Updating and installing dependencies"
 pkg update -y -o Dpkg::Options::="--force-confnew" >/dev/null 2>&1
-pkg install -y -o Dpkg::Options::="--force-confnew" zsh git gh curl wget termux-api ncurses-utils make clang tar bat grep eza fzf openssl python fontconfig termux-styling >/dev/null 2>&1
+pkg install -y -o Dpkg::Options::="--force-confnew" zsh git gh curl wget termux-api ncurses-utils make clang tar bat grep eza fzf openssl python fontconfig >/dev/null 2>&1
 
 bar "Setting up directories"
 mkdir -p ~/.termux ~/.config/neofetch
@@ -33,6 +33,11 @@ curl -fsSL "$BASE_URL/.zshrc" -o ~/.zshrc
 curl -fsSL "$BASE_URL/.p10k.zsh" -o ~/.p10k.zsh
 curl -fsSL "$BASE_URL/motd.sh" -o ~/motd.sh
 chmod +x ~/motd.sh
+
+bar "Installing Customization Tools (from Md arif)"
+curl -fsSL https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-nf -o $PREFIX/bin/termux-nf
+curl -fsSL https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-color -o $PREFIX/bin/termux-color
+chmod +x $PREFIX/bin/termux-nf $PREFIX/bin/termux-color
 
 bar "Writing color scheme"
 cat > ~/.termux/colors.properties << 'EOF'
