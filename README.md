@@ -18,7 +18,7 @@ So I built this.
 One line cuz why not ?
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.sh)"
 ```
 
 ## Features & my Shortcuts
