@@ -5,7 +5,7 @@ C_CYN='\033[1;36m'
 C_RST='\033[0m'
 
 clear
-echo -e "\n${C_CYN}>>> FIXING DATABASE AND INSTALLING. HANG TIGHT.${C_RST}\n"
+echo -e "\n${C_CYN}>>> ONE MORE TIME. SQUASHING BUGS.${C_RST}\n"
 
 dpkg --configure -a
 pkg update -y -o Dpkg::Options::="--force-confnew"
@@ -53,7 +53,7 @@ EOF
 termux-reload-settings
 rm -f ~/.bashrc
 
-echo -e "\n${C_GRN}>>> REINHART SYSTEM READY. LAUNCHING...${C_RST}"
+echo -e "\n${C_GRN}>>> REINHART PROTOCOL ACTIVE. GO.${C_RST}"
 
 chsh -s zsh
 exec zsh -l
