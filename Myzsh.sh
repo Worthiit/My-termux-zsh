@@ -5,17 +5,17 @@ C_CYN='\033[1;36m'
 C_RST='\033[0m'
 
 bar() {
-    echo -ne "${C_CYN}[+] $1...${C_RST}\r"
-    sleep 0.5
-    echo -e "${C_GRN}[✔] $1${C_RST}"
+    echo -e "\n${C_CYN}[+] $1...${C_RST}"
 }
 
 clear
 echo -e "\n${C_CYN}>>> MYZSH INSTALLER // RELAX, I'M ON IT.${C_RST}\n"
 
-bar "Updating and installing dependencies"
-pkg update -y -o Dpkg::Options::="--force-confnew" >/dev/null 2>&1
-pkg install -y -o Dpkg::Options::="--force-confnew" zsh git gh curl wget termux-api ncurses-utils make clang tar bat grep eza fzf openssl python fontconfig >/dev/null 2>&1
+bar "Updating Termux repositories"
+pkg update -y -o Dpkg::Options::="--force-confnew"
+
+bar "Installing System Dependencies (zsh, git, jq, fonts)"
+pkg install -y -o Dpkg::Options::="--force-confnew" zsh git gh curl wget termux-api ncurses-utils make clang tar bat grep eza fzf openssl python fontconfig jq
 
 bar "Setting up directories"
 mkdir -p ~/.termux ~/.config/neofetch
@@ -26,17 +26,17 @@ BRANCH="main"
 BASE_URL="https://raw.githubusercontent.com/$REPO_USER/$REPO_NAME/$BRANCH"
 
 bar "Downloading Meslo Nerd Font"
-curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf >/dev/null 2>&1
+curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf
 
-bar "Downloading Reinhart Configs (.zshrc, .p10k, motd)"
-curl -fsSL "$BASE_URL/.zshrc" -o ~/.zshrc
-curl -fsSL "$BASE_URL/.p10k.zsh" -o ~/.p10k.zsh
-curl -fsSL "$BASE_URL/motd.sh" -o ~/motd.sh
+bar "Downloading Reinhart Configs"
+curl -fL "$BASE_URL/.zshrc" -o ~/.zshrc
+curl -fL "$BASE_URL/.p10k.zsh" -o ~/.p10k.zsh
+curl -fL "$BASE_URL/motd.sh" -o ~/motd.sh
 chmod +x ~/motd.sh
 
-bar "Installing Customization Tools (from Md arif)"
-curl -fsSL https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-nf -o $PREFIX/bin/termux-nf
-curl -fsSL https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-color -o $PREFIX/bin/termux-color
+bar "Installing Customization Tools (termux-nf & termux-color)"
+curl -fL "$BASE_URL/termux-nf" -o $PREFIX/bin/termux-nf
+curl -fL "$BASE_URL/termux-color" -o $PREFIX/bin/termux-color
 chmod +x $PREFIX/bin/termux-nf $PREFIX/bin/termux-color
 
 bar "Writing color scheme"
@@ -63,9 +63,9 @@ color15=#e6e6e6
 EOF
 termux-reload-settings
 
-bar "Cleaning up trash"
+bar "Cleaning up"
 rm -f ~/.bashrc
 
-echo -e "\n${C_GRN}>>> DONE. SO NOW LET'S HAVE A LOOK AT THIS SHIt.${C_RST}"
+echo -e "\n${C_GRN}>>> SYSTEM READY. INITIALIZING ZSH.${C_RST}"
 chsh -s zsh
 zsh
