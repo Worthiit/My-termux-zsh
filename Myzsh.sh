@@ -13,18 +13,15 @@ bar() {
 clear
 echo -e "\n${C_CYN}>>> MYZSH INSTALLER // RELAX, I'M ON IT.${C_RST}\n"
 
-# 1. Update & Dependencies
 bar "Updating Termux repositories"
 pkg update -y >/dev/null 2>&1 && pkg upgrade -y >/dev/null 2>&1
 
 bar "Grabbing necessary binaries (git, gh, zsh, tools)"
-pkg install -y zsh git gh curl wget termux-api ncurses-utils make clang tar bat grep eza fzf openssl python >/dev/null 2>&1
+pkg install -y zsh git gh curl wget termux-api ncurses-utils make clang tar bat grep eza fzf openssl python fontconfig termux-styling >/dev/null 2>&1
 
-# 2. Filesystem Setup
 mkdir -p ~/.termux ~/.config/neofetch
 bar "Setting up directories"
 
-# 3. Fetch Configs from GitHub
 REPO_USER="Worthiit"
 REPO_NAME="My-termux-zsh"
 BRANCH="main"
@@ -39,7 +36,6 @@ curl -fsSL "$BASE_URL/.p10k.zsh" -o ~/.p10k.zsh
 curl -fsSL "$BASE_URL/motd.sh" -o ~/motd.sh
 chmod +x ~/motd.sh
 
-# 4. Color Scheme
 cat > ~/.termux/colors.properties << 'EOF'
 background=#101216
 foreground=#d0d0d0
@@ -63,7 +59,6 @@ color15=#e6e6e6
 EOF
 termux-reload-settings
 
-# 5. Cleanup & Switch cuz it's my zsh bruh
 rm -f ~/.bashrc
 bar "Cleaning up trash"
 
