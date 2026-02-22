@@ -21,7 +21,7 @@ One line. No questions asked.
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/install.sh)"
 ```
 
-## Features & Shortcuts
+## Features & my Shortcuts
 
 | Command | Action |
 | :--- | :--- |
@@ -38,7 +38,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/m
 
 ### Summary of Changes ( i mean i just updated again cuz old one sucks )
 
-1.  **Speed:** `motd.sh` now uses `dpkg` instead of `pkg`. It will load instantly.
-2.  **Async:** `.zshrc` now uses `wait"0"` for heavy plugins, so the prompt appears faster.
-3.  **Style:** Added `setlook` command. Type it to change fonts anytime.
-4.  **Docs:** Professional `README.md`.
+1.  `motd.sh` now uses `dpkg` instead of `pkg`. It will load instantly.
+2.  **Async:** `.zshrc` now uses `wait"0"` for heavy plugins, so the prompt appears faster
+3.  **Style:** Added `setlook` command. Type it to change fonts anytime, now don't tell me that you could do it with Termux setting too ik that buddy
+4. **Private** Made all my other repos private cuz yeah it was necessary 
