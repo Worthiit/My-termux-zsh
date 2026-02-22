@@ -22,15 +22,15 @@ ZINIT[HOME_DIR]="$HOME/.local/share/zinit"
 ZINIT[PLUGINS_DIR]="$ZINIT[HOME_DIR]/plugins"
 ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]=1
 
-zi ice
+zi ice wait"0" lucid
 zi snippet OMZL::completion.zsh
-zi ice
+zi ice wait"0" lucid
 zi snippet OMZL::git.zsh
-zi ice
+zi ice wait"0" lucid
 zi snippet OMZL::key-bindings.zsh
-zi ice
+zi ice wait"0" lucid
 zi load zsh-users/zsh-autosuggestions
-zi ice atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"
+zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"
 zi load zdharma-continuum/fast-syntax-highlighting
 
 zi for \
@@ -92,6 +92,14 @@ bring() {
 xport() {
     [[ -z "$1" ]] && echo -e "\e[31mUsage: xport <file>\e[0m" && return 1
     cp -rf "$@" "/sdcard/Download/" && echo -e "\e[32m[+] Exported to Download storage.\e[0m"
+}
+
+setlook() {
+    echo -e "\033[1;32m>>> DOWNLOADING FONT MANAGER...\033[0m"
+    curl -fsSL https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-nf -o $PREFIX/bin/termux-nf
+    chmod +x $PREFIX/bin/termux-nf
+    echo -e "\033[1;32m>>> LAUNCHING SELECTOR...\033[0m"
+    termux-nf
 }
 
 ftext() { grep -iIHrn --color=always "$1" . | less -r; }
