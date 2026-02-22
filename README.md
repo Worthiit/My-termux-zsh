@@ -15,7 +15,7 @@ So I built this.
 
 ## Installation
 
-One line. No questions asked.
+One line cuz why not ?
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/install.sh)"
