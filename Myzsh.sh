@@ -5,8 +5,9 @@ C_CYN='\033[1;36m'
 C_RST='\033[0m'
 
 clear
-echo -e "\n${C_CYN}>>> RELAX. I AM FIXING THIS SHIT NOW.${C_RST}\n"
+echo -e "\n${C_CYN}>>> FIXING DATABASE AND INSTALLING. HANG TIGHT.${C_RST}\n"
 
+dpkg --configure -a
 pkg update -y -o Dpkg::Options::="--force-confnew"
 pkg install -y -o Dpkg::Options::="--force-confnew" zsh git jq curl wget termux-api ncurses-utils make clang tar bat grep eza fzf openssl python fontconfig
 
@@ -52,12 +53,7 @@ EOF
 termux-reload-settings
 rm -f ~/.bashrc
 
-echo -e "\n${C_GRN}>>> EVERYTHING IS READY. LETS GO.${C_RST}"
+echo -e "\n${C_GRN}>>> REINHART SYSTEM READY. LAUNCHING...${C_RST}"
 
-if [ -f "$PREFIX/bin/zsh" ]; then
-    chsh -s zsh
-    exec zsh -l
-else
-    echo "Something went south. Zsh binary missing."
-    exit 1
-fi
+chsh -s zsh
+exec zsh -l
