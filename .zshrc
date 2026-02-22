@@ -51,26 +51,23 @@ alias ga='git add .'
 alias gc='git commit -m'
 alias gp='git push'
 alias gl='git pull'
+alias gs='git status -s'
 alias py='python3'
 alias myip="curl ifconfig.me"
 alias ports='netstat -tulpn'
 alias startssh='termux-ssh'
 alias stopssh='termux-ssh stop'
 alias reload="termux-reload-settings"
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias h='cd ~'
 alias dl="cd /sdcard/Download"
 alias sd="cd /sdcard"
-
 alias ls="eza --icons"
 alias la="eza --icons -lgha --group-directories-first"
 alias lt="eza --icons --tree"
 alias cat='bat --theme OneHalfDark -p'
 alias mkdir='mkdir -p'
-alias speedtest="curl -s https://raw.githubusercontent.com/noreplyui5/speedtest-cli/master/speedtest-cli.py | python3"
-
 alias texpo="mkdir -p /sdcard/Download/Tmux-expo && cp -r -t /sdcard/Download/Tmux-expo"
 alias rep="termux-clipboard-get >"
 alias runclip='termux-clipboard-get > temp_script.py && python3 temp_script.py'
