@@ -38,72 +38,79 @@ zi for \
     ohmyzsh/ohmyzsh path:plugins/extract
 
 zi ice zsh-users/zsh-completions
-zi ice atload'bindkey "^I" menu-select; bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete'
+zi ice atload'bindkey "^I" menu-select; bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete; bindkey -M menuselect "^[[A" up-line-or-history; bindkey -M menuselect "^[[B" down-line-or-history; bindkey -M menuselect "^[[C" forward-char; bindkey -M menuselect "^[[D" backward-char'
 zi light marlonrichert/zsh-autocomplete
 
 alias q="exit"
 alias c="clear"
-alias cls="clear"
-alias up='pkg update -y && pkg upgrade -y'
-alias rf='rm -rf'
-alias g='git'
-alias ga='git add .'
-alias gc='git commit -m'
-alias gp='git push'
-alias gl='git pull'
-alias gs='git status -s'
-alias py='python3'
-alias myip="curl ifconfig.me"
-alias ports='netstat -tulpn'
-alias startssh='termux-ssh'
-alias stopssh='termux-ssh stop'
-alias reload="termux-reload-settings"
+alias g="git"
+alias f="find . | grep "
+alias sd="cd /sdcard"
+alias pf='cd "$PREFIX"'
+alias ss="cd /sdcard/Pictures/Screenshots/"
+alias ms="cd /sdcard/Movies"
+alias dl="cd /sdcard/Download"
+alias ds="cd /sdcard/Documents"
 alias ..='cd ..'
 alias ...='cd ../..'
-alias h='cd ~'
-alias dl="cd /sdcard/Download"
-alias sd="cd /sdcard"
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 alias ls="eza --icons"
 alias la="eza --icons -lgha --group-directories-first"
+alias l="eza --icons -lgha --group-directories-first"
+alias ly="eza --icons -lgha --group-directories-first"
 alias lt="eza --icons --tree"
+alias lta="eza --icons --tree -lgha"
+alias preview="fzf --preview='bat --color=always --style=numbers --theme OneHalfDark {}' --preview-window=down"
+alias fnvim='nvim $(fzf -m --preview="bat --color=always --style=numbers --theme OneHalfDark {}" --preview-window=down)'
+alias fvim='vim $(fzf -m --preview="bat --color=always --style=numbers --theme OneHalfDark {}" --preview-window=down)'
+alias fcd="cd \$(find . -type d | fzf)"
+alias vi='nvim'
+alias vim='nvim'
+alias n='nvim'
 alias cat='bat --theme OneHalfDark -p'
 alias mkdir='mkdir -p'
+alias reload="termux-reload-settings"
+alias psu="ps aux"
+alias psg="ps aux | grep -i"
+alias kill9="kill -9"
+alias startssh='termux-ssh'
+alias stopssh='termux-ssh stop'
+alias myip="curl ifconfig.me"
+alias speedtest="curl -s https://raw.githubusercontent.com/noreplyui5/speedtest-cli/master/speedtest-cli.py | python3"
+alias neofetch='fastfetch'
+alias largefile="du -h -x -s -- * | sort -r -h | head -20"
+alias listfont="magick convert -list font | grep -iE 'font:.*'"
 alias texpo="mkdir -p /sdcard/Download/Tmux-expo && cp -r -t /sdcard/Download/Tmux-expo"
 alias rep="termux-clipboard-get >"
 alias runclip='termux-clipboard-get > temp_script.py && python3 temp_script.py'
 
-copyclip() { termux-clipboard-set < "$1" && echo "\e[32m[✔] Copied $1\e[0m"; }
-
-reveal() {
-    printf "\n\033[1;36m[ NETWORK REVEAL ]\033[0m\n"
-    printf "\033[1;35mLocal IP  :: \033[1;37m%s\033[0m\n" "$(ifconfig | grep -oE '192\.168\.[0-9]+\.[0-9]+' | head -n 1)"
-    printf "\033[1;35mPublic IP :: \033[1;37m%s\033[0m\n" "$(curl -s https://api.ipify.org)"
-    printf "\n"
-}
-
-bring() {
-    [[ -z "$1" ]] && echo -e "\e[31mUsage: bring <path>\e[0m" && return 1
-    cp -rf "$@" . && echo -e "\e[32m[+] Retrieved object to current sector.\e[0m"
-}
-
-xport() {
-    [[ -z "$1" ]] && echo -e "\e[31mUsage: xport <file>\e[0m" && return 1
-    cp -rf "$@" "/sdcard/Download/" && echo -e "\e[32m[+] Exported to Download storage.\e[0m"
-}
-
-setlook() {
-    termux-nf
-}
-
-setstyle() {
-    termux-color
-}
-
-setprompt() {
-    p10k configure
+extract() {
+	local archive="$1"
+	if [[ ! -f "$archive" ]]; then return 1; fi
+	case "$archive" in
+	*.tar.gz | *.tgz) tar -xzvf "$1" ;;
+	*.tar.xz | *.txz) tar -xJvf "$1" ;;
+	*.zip | *.jar | *.apk) unzip "$1" ;;
+	*.rar) unrar x "$1" ;;
+	*.7z) 7z x "$1" ;;
+	*) 7z x "$1" ;;
+	esac
 }
 
 ftext() { grep -iIHrn --color=always "$1" . | less -r; }
+cpg() { cp "$1" "$2" && cd "$2"; }
+mvg() { mv "$1" "$2" && cd "$2"; }
+mkdirg() { mkdir -p "$1" && cd "$1"; }
+backup() { cp -r "$1" "${1}.backup.$(date +%Y%m%d_%H%M%S)"; }
+duf() { du -h "${1:-.}"/* 2>/dev/null | sort -hr | head -20; }
+reveal() { printf "\n\033[1;36m[ NETWORK REVEAL ]\033[0m\n"; printf "\033[1;35mLocal IP  :: \033[1;37m%s\033[0m\n" "$(ifconfig | grep -oE '192\.168\.[0-9]+\.[0-9]+' | head -n 1)"; printf "\033[1;35mPublic IP :: \033[1;37m%s\033[0m\n" "$(curl -s https://api.ipify.org)"; printf "\n"; }
+copyclip() { termux-clipboard-set < "$1" && echo "\e[32m[✔] Copied $1\e[0m"; }
+bring() { cp -rf "$@" .; }
+xport() { cp -rf "$@" "/sdcard/Download/"; }
+setlook() { termux-nf; }
+setstyle() { termux-color; }
+setprompt() { p10k configure; }
 
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
