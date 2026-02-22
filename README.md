@@ -48,9 +48,10 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/m
 
 ## Credits
 This script is mine which is a simple code/commands, there is no need to even take credit BUT
-The font (`setlook`) and color (`setstyle`) management scripts are modified versions of tools originally created by **Md arif** ( ig yes )
+The font (`setlook`) and color (`setstyle`) management scripts are modified versions of tools (termux-nf & termux-colors )originally created by **Md arif** ( ig yes )
 
 - Original Project: [termux-desktop](https://github.com/sabamdarif/termux-desktop)
 - Author: [sabamdarif](https://github.com/sabamdarif)
 
 Respect to the open-source community.
+
