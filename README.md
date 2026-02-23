@@ -31,6 +31,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/m
 | Command | Action |
 | :--- | :--- |
 | `up` | Update & Upgrade System |
+| `setname` | Change the username shown in the welcome screen |
 | `setlook` | Change Fonts instantly |
 | `setstyle`| Change Color Scheme |
 | `setprompt`| Configure the Zsh prompt style |
