@@ -88,6 +88,12 @@ xport() {
     cp -rf "$@" "/sdcard/Download/" && echo -e "\e[32m[+] Exported to Download storage.\e[0m"
 }
 
+setname() {
+    [[ -z "$1" ]] && echo -e "\e[31mUsage: setname \"New Name\"\e[0m" && return 1
+    echo "$1" > ~/.termux_user
+    echo -e "\e[32m[✔] Identity updated to $1\e[0m"
+}
+
 setlook() { termux-nf; }
 setstyle() { termux-color; }
 setprompt() { p10k configure; }
