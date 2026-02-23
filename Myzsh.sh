@@ -9,19 +9,15 @@ bar() {
 }
 
 clear
-echo -e "\n${C_CYN}>>> MYZSH INSTALLER // GO GRAB A COFFEE, I'LL HANDLE THIS.${C_RST}\n"
+echo -e "\n${C_CYN}Starting Termux setup...${C_RST}\n"
 
-echo -e "${C_CYN}>>> PHASE 1: SYSTEM PREP & DEPENDENCIES...${C_RST}"
-pkg update -y -o Dpkg::Options::="--force-confnew"
-pkg upgrade -y -o Dpkg::Options::="--force-confnew"
-pkg install -y -o Dpkg::Options::="--force-confnew" \
-    zsh git gh curl wget termux-api ncurses-utils make \
-    clang tar bat grep eza fzf openssl python jq fontconfig
+pkg update -y -o Dpkg::Options::="--force-confnew" >/dev/null 2>&1
+pkg upgrade -y -o Dpkg::Options::="--force-confnew" >/dev/null 2>&1
+pkg install -y -o Dpkg::Options::="--force-confnew" zsh git gh curl wget termux-api ncurses-utils make clang tar bat grep eza fzf openssl python jq fontconfig >/dev/null 2>&1
+bar "Packages installed"
 
-bar "System is up to date and dependencies are locked in."
-
-echo -e "\n${C_CYN}>>> PHASE 2: CONFIGURATION DEPLOYMENT...${C_RST}"
 mkdir -p ~/.termux
+echo "Reinhart" > ~/.termux_user
 
 REPO_USER="Worthiit"
 REPO_NAME="My-termux-zsh"
@@ -34,11 +30,9 @@ curl -fsSL "$BASE_URL/motd.sh" -o ~/motd.sh
 curl -fsSL "$BASE_URL/termux-nf" -o $PREFIX/bin/termux-nf
 curl -fsSL "$BASE_URL/termux-color" -o $PREFIX/bin/termux-color
 chmod +x ~/motd.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color
+bar "Configs downloaded"
 
-bar "Reinhart configs pulled from your repo."
-
-echo -e "\n${C_CYN}>>> PHASE 3: AESTHETICS...${C_RST}"
-curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf
+curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf >/dev/null 2>&1
 cat > ~/.termux/colors.properties << 'EOF'
 background=#101216
 foreground=#d0d0d0
@@ -61,12 +55,9 @@ color14=#9aedfe
 color15=#e6e6e6
 EOF
 termux-reload-settings
-bar "Nerd Font and Cyberpunk color scheme injected."
+bar "Fonts and colors applied"
 
-echo -e "\n${C_CYN}>>> FINALIZING...${C_RST}"
 rm -f ~/.bashrc
-bar "Old junk purged."
-
-echo -e "\n${C_GRN}>>> DONE. LET'S SEE WHAT WE'VE GOT.${C_RST}"
 chsh -s zsh
-zsh
+
+echo -e "\n${C_GRN}Setup complete. Please close and restart the Termux app.${C_RST}\n"
