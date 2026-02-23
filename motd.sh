@@ -10,7 +10,7 @@ C_RST='\033[0m'
 
 clear
 
-user="Reinhart"
+user=$(cat ~/.termux_user 2>/dev/null || echo "Termux")
 model=$(getprop ro.product.model 2>/dev/null || echo "Android")
 kernel=$(uname -r | cut -d'-' -f1)
 uptime=$(uptime | awk -F'( |,|:)+' '{if ($7=="min") print $6"m"; else print $6"h "$7"m"}')
