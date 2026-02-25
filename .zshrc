@@ -5,26 +5,33 @@ fi
 [[ -f ~/motd.sh ]] && source ~/motd.sh
 
 HISTFILE="$HOME/.zsh_history"
-HISTSIZE=10000
-SAVEHIST=10000
-setopt EXTENDED_HISTORY
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
-setopt SHARE_HISTORY
+HISTSIZE=50000
+SAVEHIST=50000
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt inc_append_history
+setopt share_history
 setopt AUTO_CD
 setopt nonomatch
+
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
+bindkey '^Z' undo
+bindkey '^Y' redo
+bindkey ' ' magic-space
+autoload -Uz zmv
 
 ZINIT_HOME="$HOME/.local/share/zinit/zinit.git"
 if [[ ! -f "$ZINIT_HOME/zinit.zsh" ]]; then
     mkdir -p "$(dirname "$ZINIT_HOME")"
     git clone https://github.com/zdharma-continuum/zinit "$ZINIT_HOME"
 fi
-
 source "$ZINIT_HOME/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
-
 typeset -gAH ZINIT
 ZINIT[HOME_DIR]="$HOME/.local/share/zinit"
 ZINIT[PLUGINS_DIR]="$ZINIT[HOME_DIR]/plugins"
@@ -35,7 +42,6 @@ zi ice wait"0" lucid; snippet OMZL::git.zsh
 zi ice wait"0" lucid; snippet OMZL::key-bindings.zsh
 zi ice wait"0" lucid; load zsh-users/zsh-autosuggestions
 zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"; load zdharma-continuum/fast-syntax-highlighting
-
 zi for ohmyzsh/ohmyzsh path:plugins/extract
 zi ice zsh-users/zsh-completions
 zi ice atload'bindkey "^I" menu-select; bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete'
@@ -47,6 +53,9 @@ alias q="exit"
 alias c="clear"
 alias cls="clear"
 alias v="nvim"
+alias vi='nvim'
+alias vim='nvim'
+alias n='nvim'
 alias up='pkg update -y && pkg upgrade -y'
 alias rf='rm -rf'
 alias g='git'
@@ -55,57 +64,148 @@ alias gc='git commit -m'
 alias gp='git push'
 alias gl='git pull'
 alias py='python3'
-alias myip="curl ifconfig.me"
-alias ports='netstat -tulpn'
-alias startssh='ssh -p 8022 localhost'
-alias stopssh='pkill sshd'
-alias reload="termux-reload-settings"
+alias sd="cd /sdcard"
+alias pf='cd "$PREFIX"'
+alias ss="cd /sdcard/Pictures/Screenshots/"
+alias ms="cd /sdcard/Movies"
+alias dl="cd /sdcard/Download"
+alias ds="cd /sdcard/Documents"
 alias cd="z"
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 alias h='cd ~'
-alias dl="cd /sdcard/Download"
-alias sd="cd /sdcard"
 alias ls="eza --icons"
-alias ll="eza --icons -lgha --group-directories-first"
 alias la="eza --icons -lgha --group-directories-first"
+alias l="eza --icons -lgha --group-directories-first"
+alias ly="eza --icons -lgha --group-directories-first"
 alias lt="eza --icons --tree"
-alias cat='bat --theme OneHalfDark -p'
+alias lta="eza --icons --tree -lgha"
+alias preview="fzf --preview='bat --color=always --style=numbers --theme OneHalfDark {}' --preview-window=down"
+alias fnvim='nvim $(fzf -m --preview="bat --color=always --style=numbers --theme OneHalfDark {}" --preview-window=down)'
+alias fvim='vim $(fzf -m --preview="bat --color=always --style=numbers --theme OneHalfDark {}" --preview-window=down)'
+alias fcd="cd \$(find . -type d | fzf)"
+alias mkdir='mkdir -p'
+alias psu="ps aux"
+alias psg="ps aux | grep -i"
+alias kill9="kill -9"
+alias startssh='termux-ssh'
+alias stopssh='termux-ssh stop'
+alias myip="curl ifconfig.me"
+alias ports='netstat -tulpn'
+alias speedtest="curl -s https://raw.githubusercontent.com/noreplyui5/speedtest-cli/master/speedtest.py | python"
+alias neofetch='fastfetch'
+alias largefile="du -h -x -s -- * | sort -r -h | head -20"
+alias listfont="magick convert -list font | grep -iE 'font:.*'"
+alias reload="termux-reload-settings"
 alias texpo="mkdir -p /sdcard/Download/Tmux-expo && cp -r -t /sdcard/Download/Tmux-expo"
 alias rep="termux-clipboard-get >"
 alias runclip='termux-clipboard-get > temp_script.py && python3 temp_script.py'
 alias arsenal="~/gettools.sh"
 
-chpwd() {
-    eza --icons -lgha --group-directories-first
+if command -v batcat &>/dev/null; then
+    alias cat='batcat --theme OneHalfDark -p'
+else
+    alias cat='bat --theme OneHalfDark -p'
+fi
+
+chpwd() { eza --icons -lgha --group-directories-first; }
+mkcd() { mkdir -p "$1" && cd "$1"; }
+cpg() { if [ -d "$2" ]; then cp "$1" "$2" && cd "$2" || return; else cp "$1" "$2"; fi }
+mvg() { if [ -d "$2" ]; then mv "$1" "$2" && cd "$2" || return; else mv "$1" "$2"; fi }
+mkdirg() { mkdir -p "$1" && cd "$1" || return; }
+
+fkill() {
+    local pid
+    local tmpfile
+    tmpfile=$(mktemp)
+    ps -eo user,pid,cmd --sort=-%mem | sed 1d | fzf --multi --reverse --header=" Select processes to kill (Tab to mark, Enter to kill)" --preview 'ps -p {2} -o pid,user,%cpu,%mem,cmd' --bind 'ctrl-s:toggle-sort' >"$tmpfile"
+    if [[ ! -s $tmpfile ]]; then
+        rm -f "$tmpfile"
+        return 1
+    fi
+    while IFS= read -r line; do
+        pid=$(echo "$line" | awk '{print $2}')
+        if [[ -n "$pid" ]]; then
+            if kill -TERM "$pid" 2>/dev/null; then : ; else kill -KILL "$pid" 2>/dev/null; fi
+        fi
+    done <"$tmpfile"
+    rm -f "$tmpfile"
 }
 
-mkcd() {
-    mkdir -p "$1" && cd "$1"
-}
-
-extract() {
-    if [ -f "$1" ]; then
-        case "$1" in
-            *.tar.bz2)   tar xjf "$1"     ;;
-            *.tar.gz)    tar xzf "$1"     ;;
-            *.bz2)       bunzip2 "$1"     ;;
-            *.rar)       unrar e "$1"     ;;
-            *.gz)        gunzip "$1"      ;;
-            *.tar)       tar xf "$1"      ;;
-            *.tbz2)      tar xjf "$1"     ;;
-            *.tgz)       tar xzf "$1"     ;;
-            *.zip)       unzip "$1"       ;;
-            *.Z)         uncompress "$1"  ;;
-            *.7z)        7z x "$1"        ;;
-            *)           echo "'$1' cannot be extracted via extract()" ;;
-        esac
+backup() {
+    local item="$1"
+    [[ -z "$item" ]] && return 1
+    local backup_name="${item}.backup.$(date +%Y%m%d_%H%M%S)"
+    if [[ -d "$item" ]]; then
+        cp -rv "$item" "$backup_name"
     else
-        echo "'$1' is not a valid file"
+        cp -v "$item" "$backup_name"
     fi
 }
 
-copyclip() { termux-clipboard-set < "$1" && echo "\e[32m[✔] Copied $1\e[0m"; }
+freplace() {
+    [[ $# -ne 3 ]] && return 1
+    local search="$1"
+    local replace="$2"
+    local pattern="$3"
+    grep -l "$search" $pattern 2>/dev/null || return 1
+    read -p "Continue with replacement? (y/N): " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        sed -i.bak "s/$search/$replace/g" $pattern
+    fi
+}
+
+duf() {
+    local target="${1:-.}"
+    du -h "$target"/* 2>/dev/null | sort -hr | head -20
+}
+
+note() {
+    local note_file="$HOME/.notes"
+    if [[ $# -eq 0 ]]; then
+        cat "$note_file" 2>/dev/null
+    else
+        echo "$(date '+%Y-%m-%d %H:%M:%S'): $*" >>"$note_file"
+    fi
+}
+
+encrypt() {
+    local file="$1"
+    [[ -z "$file" ]] && return 1
+    openssl enc -aes-256-cbc -salt -in "$file" -out "${file}.enc"
+}
+
+decrypt() {
+    local file="$1"
+    [[ -z "$file" ]] && return 1
+    local output="${file%.enc}"
+    openssl enc -d -aes-256-cbc -in "$file" -out "$output"
+}
+
+checksum() {
+    local file="$1"
+    [[ -z "$file" || ! -f "$file" ]] && return 1
+    echo "  MD5:    $(md5sum "$file" | cut -d' ' -f1)"
+    echo "  SHA1:   $(sha1sum "$file" | cut -d' ' -f1)"
+    echo "  SHA256: $(sha256sum "$file" | cut -d' ' -f1)"
+}
+
+cp2clip() {
+    [[ $# -eq 0 ]] && return 1
+    [[ ! -f "$1" ]] && return 1
+    if command -v termux-clipboard-set >/dev/null; then
+        cat "$1" | termux-clipboard-set
+    elif command -v xclip >/dev/null; then
+        cat "$1" | xclip -selection clipboard
+    elif command -v xsel >/dev/null; then
+        cat "$1" | xsel --clipboard --input
+    fi
+}
+
+copyclip() { termux-clipboard-set < "$1"; }
 
 reveal() {
     printf "\n\033[1;36m[ NETWORK REVEAL ]\033[0m\n"
@@ -115,19 +215,18 @@ reveal() {
 }
 
 bring() {
-    [[ -z "$1" ]] && echo -e "\e[31mUsage: bring <path>\e[0m" && return 1
-    cp -rf "$@" . && echo -e "\e[32m[+] Retrieved object to current sector.\e[0m"
+    [[ -z "$1" ]] && return 1
+    cp -rf "$@" .
 }
 
 xport() {
-    [[ -z "$1" ]] && echo -e "\e[31mUsage: xport <file>\e[0m" && return 1
-    cp -rf "$@" "/sdcard/Download/" && echo -e "\e[32m[+] Exported to Download storage.\e[0m"
+    [[ -z "$1" ]] && return 1
+    cp -rf "$@" "/sdcard/Download/"
 }
 
 setname() {
-    [[ -z "$1" ]] && echo -e "\e[31mUsage: setname \"New Name\"\e[0m" && return 1
+    [[ -z "$1" ]] && return 1
     echo "$1" > ~/.termux_user
-    echo -e "\e[32m[✔] Identity updated to $1\e[0m"
 }
 
 setlook() { termux-nf; }
