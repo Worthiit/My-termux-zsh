@@ -59,12 +59,12 @@ I automated the annoying manual stuff in `.zshrc`.
 1.  `motd.sh` now uses `dpkg` instead of `pkg`. It will load instantly.
 2.  **Async:** `.zshrc` now uses `wait"0"` for heavy plugins, so the prompt appears faster
 3.  **Style:** Added `setlook` command. Type it to change fonts anytime, now don't tell me that you could do it with Termux setting too ik that buddy
-4. **Private:** Made all my other repos private cuz yeah it was necessary 
-5.**Mess:**  i made a mess while trying to make it better 
+4. **Private:** Made all my other repos private cuz yeah it was necessary
+5. **Mess:**  i made a mess while trying to make it better 
 
 ## Credits
 This script is mine which is a simple code/commands, there is no need to even take credit BUT
-The font (`setlook`) and color (`setstyle`) management scripts are modified versions of tools (termux-nf & termux-colors) originally created by **Md arif** ( ig yes )
+The font (`setlook`) and color (`setstyle`) management scripts are modified versions of tools (termux-nf & termux-colors) originally created by **Md arif** ( ig yes ) 
 
 - Original Project: [termux-desktop](https://github.com/sabamdarif/termux-desktop)
 - Author: [sabamdarif](https://github.com/sabamdarif)
