@@ -18,7 +18,7 @@ pkgs=$(ls $PREFIX/var/lib/dpkg/info/*.list 2>/dev/null | wc -l)
 shell_v=$ZSH_VERSION
 storage=$(df -h /data 2>/dev/null | awk 'NR==2 {print $3 "/" $2}')
 
-if [ -e /sys/class/power_supply/battery/capacity ]; then
+if[ -e /sys/class/power_supply/battery/capacity ]; then
     bat_lvl="$(cat /sys/class/power_supply/battery/capacity)%"
 else
     bat_lvl="N/A"
@@ -88,13 +88,33 @@ quotes=(
     "Linux is only free if your time has no value."
     "Power comes not from knowledge kept but from knowledge shared."
     "Stay hungry, stay foolish."
+    "It works on my machine."
+    "There is no place like 127.0.0.1"
+    "Deleted code is debugged code."
+    "Experience is the name everyone gives to their mistakes."
+    "Java is to JavaScript what car is to Carpet."
+    "First, solve the problem. Then, write the code."
+    "In order to understand recursion, one must first understand recursion."
+    "The best error message is the one that never shows up."
+    "I have not failed. I've just found 10,000 ways that won't work."
+    "Make it work, make it right, make it fast."
 )
+
 tips=(
     "Use 'Ctrl+R' to search history backward."
     "Type 'cd <folder>' (Zoxide enabled for fast jumps)."
     "Alt+. inserts the last argument of the previous command."
     "Type 'ftext <string>' to fast-search file contents."
     "Type 'findbig' to locate files > 100MB."
+    "Type 'ninja' to open the tool installer."
+    "Type 'setbg' to change your terminal background."
+    "Type 'texpo' to backup download files."
+    "Use 'cp2clip file.txt' to copy file content to clipboard."
+    "Use 'extract archive.zip' to unpack anything."
+    "Type '!!' to run the last command again."
+    "Type 'cd -' to toggle previous directory."
+    "Use 'c' or 'cls' to clear screen."
+    "Type 'setstyle' to change colors."
 )
 
 rand_q=$(( RANDOM % ${#quotes[@]} + 1 ))
