@@ -20,7 +20,7 @@ So I built this.
 One line command cuz why not ?
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.sh)"
+curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.sh -o setup.sh && bash setup.sh
 ```
 
 ## Features & my Shortcuts
