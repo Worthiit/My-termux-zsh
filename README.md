@@ -39,7 +39,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/m
 | `texpo` | Backup Tmux to Downloads |
 | `..` | Go back one folder |
 
-### 🛠 The Arsenal (Tool Manager)
+### 🛠 The Arsenal (Tool Manager , still incomplete)
 I built a CLI interface to let you instantly bulk-install 30+ God-Tier Termux tools (like `apktool`, `lazygit`, `tmate`, `nmap`, etc.) without typing `pkg install` over and over.
 
 Type this to open the menu:
