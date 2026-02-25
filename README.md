@@ -39,6 +39,20 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/m
 | `texpo` | Backup Tmux to Downloads |
 | `..` | Go back one folder |
 
+### 🛠 The Arsenal (Tool Manager)
+I built a CLI interface to let you instantly bulk-install 30+ God-Tier Termux tools (like `apktool`, `lazygit`, `tmate`, `nmap`, etc.) without typing `pkg install` over and over.
+
+Type this to open the menu:
+```bash
+arsenal
+```
+It installs what you pick and spits out a cheat sheet on how to use them immediately.
+
+### ⚙️ Automated System Tricks
+I automated the annoying manual stuff in `.zshrc`.
+- **Auto-LS:** Just `cd` into a directory, and it will automatically list all files visually using `eza`.
+- **`mkcd <folder>`:** Creates a folder and instantly jumps into it.
+- **`extract <file>`:** won't needa remember flags anymore , drop any `.tar.gz`, `.zip`, `.rar`, or `.bz2` into it, and it will figure out the right command to extract it automatically ( hope so )
 
 ### Summary of Changes ( i mean i just updated again cuz old one sucks )
 
@@ -46,8 +60,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/m
 2.  **Async:** `.zshrc` now uses `wait"0"` for heavy plugins, so the prompt appears faster
 3.  **Style:** Added `setlook` command. Type it to change fonts anytime, now don't tell me that you could do it with Termux setting too ik that buddy
 4. **Private:** Made all my other repos private cuz yeah it was necessary 
-
-
+5.**Mess:**  i made a mess while trying to make it better 
 
 ## Credits
 This script is mine which is a simple code/commands, there is no need to even take credit BUT
