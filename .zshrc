@@ -37,18 +37,12 @@ ZINIT[HOME_DIR]="$HOME/.local/share/zinit"
 ZINIT[PLUGINS_DIR]="$ZINIT[HOME_DIR]/plugins"
 ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]=1
 
-zi ice wait"0" lucid
-zi snippet OMZL::completion.zsh
-zi ice wait"0" lucid
-zi snippet OMZL::git.zsh
-zi ice wait"0" lucid
-zi snippet OMZL::key-bindings.zsh
-zi ice wait"0" lucid
-zi load zsh-users/zsh-autosuggestions
-zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"
-zi load zdharma-continuum/fast-syntax-highlighting
-zi ice wait"0" lucid
-zi load zsh-users/zsh-completions
+zi ice wait"0" lucid; snippet OMZL::completion.zsh
+zi ice wait"0" lucid; snippet OMZL::git.zsh
+zi ice wait"0" lucid; snippet OMZL::key-bindings.zsh
+zi ice wait"0" lucid; load zsh-users/zsh-autosuggestions
+zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"; load zdharma-continuum/fast-syntax-highlighting
+zi ice wait"0" lucid; load zsh-users/zsh-completions
 zi ice wait"0" lucid atload'bindkey "^I" menu-select; bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete'
 zi load marlonrichert/zsh-autocomplete
 
@@ -142,6 +136,8 @@ setbg() {
     if [[ -n "$1" ]]; then
         if [[ -f "$1" ]]; then
             cp "$1" ~/.termux/background.jpeg
+            # Force refresh specifically for background
+            am broadcast --user 0 -a com.termux.app.reload_style com.termux >/dev/null 2>&1
             termux-reload-settings
             echo "\033[1;32m[✔] Background updated from path.\033[0m"
             return
@@ -160,8 +156,6 @@ setbg() {
     echo "\033[1;36m>>> SCANNING IMAGES (Downloads, Pictures, DCIM)...\033[0m"
     local img_list
     
-    # Use 'fd' if available (faster), else 'find'
-    # We explicitly scan safe folders to avoid 0/0 results caused by Android permissions
     if command -v fd &> /dev/null; then
         img_list=$(fd -e jpg -e jpeg -e png . ~/storage/downloads ~/storage/pictures ~/storage/dcim 2>/dev/null)
     else
@@ -178,9 +172,9 @@ setbg() {
 
     if [[ -n "$file" ]]; then
         cp "$file" ~/.termux/background.jpeg
+        am broadcast --user 0 -a com.termux.app.reload_style com.termux >/dev/null 2>&1
         termux-reload-settings
         echo "\033[1;32m[✔] Background updated: $file\033[0m"
-        echo "\033[1;30m(If transparency is too low, you might not see it)\033[0m"
     fi
 }
 
@@ -283,3 +277,46 @@ extract() {
 }
 
 cp2clip() {
+    [[ $# -eq 0 ]] && return 1
+    [[ ! -f "$1" ]] && return 1
+    if command -v termux-clipboard-set >/dev/null; then
+        cat "$1" | termux-clipboard-set
+    elif command -v xclip >/dev/null; then
+        cat "$1" | xclip -selection clipboard
+    elif command -v xsel >/dev/null; then
+        cat "$1" | xsel --clipboard --input
+    fi
+}
+
+copyclip() { termux-clipboard-set < "$1"; }
+
+reveal() {
+    printf "\n\033[1;36m[ NETWORK REVEAL ]\033[0m\n"
+    printf "\033[1;35mLocal IP  :: \033[1;37m%s\033[0m\n" "$(ifconfig wlan0 2>/dev/null | awk '/inet /{print $2}')"
+    printf "\033[1;35mPublic IP :: \033[1;37m%s\033[0m\n" "$(curl -s https://api.ipify.org)"
+    printf "\n"
+}
+
+bring() {
+    [[ -z "$1" ]] && return 1
+    cp -rf "$@" .
+}
+
+xport() {
+    [[ -z "$1" ]] && return 1
+    cp -rf "$@" "/sdcard/Download/"
+}
+
+setname() {
+    [[ -z "$1" ]] && return 1
+    echo "$1" > ~/.termux_user
+}
+
+setlook() { termux-nf; }
+setstyle() { termux-color; }
+setprompt() { p10k configure; }
+ftext() { rg -i "$1"; }
+findbig() { fd -S +100M; }
+
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
