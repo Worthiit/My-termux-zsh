@@ -37,12 +37,25 @@ ZINIT[HOME_DIR]="$HOME/.local/share/zinit"
 ZINIT[PLUGINS_DIR]="$ZINIT[HOME_DIR]/plugins"
 ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]=1
 
-zi ice wait"0" lucid; snippet OMZL::completion.zsh
-zi ice wait"0" lucid; snippet OMZL::git.zsh
-zi ice wait"0" lucid; snippet OMZL::key-bindings.zsh
-zi ice wait"0" lucid; load zsh-users/zsh-autosuggestions
-zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"; load zdharma-continuum/fast-syntax-highlighting
-zi ice wait"0" lucid; load zsh-users/zsh-completions
+# Fixed syntax: added 'zi' before snippet/load commands
+zi ice wait"0" lucid
+zi snippet OMZL::completion.zsh
+
+zi ice wait"0" lucid
+zi snippet OMZL::git.zsh
+
+zi ice wait"0" lucid
+zi snippet OMZL::key-bindings.zsh
+
+zi ice wait"0" lucid
+zi load zsh-users/zsh-autosuggestions
+
+zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"
+zi load zdharma-continuum/fast-syntax-highlighting
+
+zi ice wait"0" lucid
+zi load zsh-users/zsh-completions
+
 zi ice wait"0" lucid atload'bindkey "^I" menu-select; bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete'
 zi load marlonrichert/zsh-autocomplete
 
@@ -116,7 +129,6 @@ mvg() { if [ -d "$2" ]; then mv "$1" "$2" && cd "$2" || return; else mv "$1" "$2
 mkdirg() { mkdir -p "$1" && cd "$1" || return; }
 
 setbg() {
-    # 1. Reset Flag
     if [[ "$1" == "--default" ]]; then
         rm -f ~/.termux/background.jpeg
         termux-reload-settings
@@ -124,7 +136,6 @@ setbg() {
         return
     fi
 
-    # 2. Check Storage Access
     if [ ! -d "$HOME/storage" ]; then
         echo "\033[1;33m[!] Storage access required. Requesting permission...\033[0m"
         termux-setup-storage
@@ -132,11 +143,9 @@ setbg() {
         return
     fi
 
-    # 3. Direct Path Argument
     if [[ -n "$1" ]]; then
         if [[ -f "$1" ]]; then
             cp "$1" ~/.termux/background.jpeg
-            # Force refresh specifically for background
             am broadcast --user 0 -a com.termux.app.reload_style com.termux >/dev/null 2>&1
             termux-reload-settings
             echo "\033[1;32m[✔] Background updated from path.\033[0m"
@@ -147,7 +156,6 @@ setbg() {
         fi
     fi
 
-    # 4. Interactive Mode
     if ! command -v fzf &> /dev/null; then
         echo "\033[1;31m[!] fzf is missing. Run: pkg install fzf\033[0m"
         return
