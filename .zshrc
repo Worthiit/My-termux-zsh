@@ -37,31 +37,15 @@ ZINIT[HOME_DIR]="$HOME/.local/share/zinit"
 ZINIT[PLUGINS_DIR]="$ZINIT[HOME_DIR]/plugins"
 ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]=1
 
-# --- FIXED PLUGIN LOADING ---
-zi ice wait"0" lucid
-zi snippet OMZL::completion.zsh
-
-zi ice wait"0" lucid
-zi snippet OMZL::git.zsh
-
-zi ice wait"0" lucid
-zi snippet OMZL::key-bindings.zsh
-
-zi ice wait"0" lucid
-zi load zsh-users/zsh-autosuggestions
-
-zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"
-zi load zdharma-continuum/fast-syntax-highlighting
-
-zi ice wait"0" lucid
-zi load zsh-users/zsh-completions
-
+zi ice wait"0" lucid; snippet OMZL::completion.zsh
+zi ice wait"0" lucid; snippet OMZL::git.zsh
+zi ice wait"0" lucid; snippet OMZL::key-bindings.zsh
+zi ice wait"0" lucid; load zsh-users/zsh-autosuggestions
+zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"; load zdharma-continuum/fast-syntax-highlighting
+zi ice wait"0" lucid; load zsh-users/zsh-completions
 zi ice wait"0" lucid atload'bindkey "^I" menu-select; bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete'
 zi load marlonrichert/zsh-autocomplete
 
-zi for ohmyzsh/ohmyzsh path:plugins/extract
-
-# --- TOOLS & ALIASES ---
 eval "$(zoxide init zsh)"
 
 alias q="exit"
@@ -159,7 +143,7 @@ setbg() {
         fi
     fi
 
-    if ! command -v fzf &> /dev/null; then
+    if ! command -v fzf >/dev/null 2>&1; then
         echo "\033[1;31m[!] fzf is missing. Run: pkg install fzf\033[0m"
         return
     fi
@@ -167,7 +151,7 @@ setbg() {
     echo "\033[1;36m>>> SCANNING IMAGES (Downloads, Pictures, DCIM)...\033[0m"
     local img_list
     
-    if command -v fd &> /dev/null; then
+    if command -v fd >/dev/null 2>&1; then
         img_list=$(fd -e jpg -e jpeg -e png . ~/storage/downloads ~/storage/pictures ~/storage/dcim 2>/dev/null)
     else
         img_list=$(find ~/storage/downloads ~/storage/pictures ~/storage/dcim -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) 2>/dev/null)
@@ -223,4 +207,111 @@ freplace() {
     local search="$1"
     local replace="$2"
     local pattern="$3"
-    grep -l "$search" $pattern 2>
+    grep -l "$search" $pattern 2>/dev/null || return 1
+    read -p "Continue with replacement? (y/N): " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        sed -i.bak "s/$search/$replace/g" $pattern
+    fi
+}
+
+duf() {
+    local target="${1:-.}"
+    du -h "$target"/* 2>/dev/null | sort -hr | head -20
+}
+
+note() {
+    local note_file="$HOME/.notes"
+    if [[ $# -eq 0 ]]; then
+        cat "$note_file" 2>/dev/null
+    else
+        echo "$(date '+%Y-%m-%d %H:%M:%S'): $*" >>"$note_file"
+    fi
+}
+
+encrypt() {
+    local file="$1"
+    [[ -z "$file" ]] && return 1
+    openssl enc -aes-256-cbc -salt -in "$file" -out "${file}.enc"
+}
+
+decrypt() {
+    local file="$1"
+    [[ -z "$file" ]] && return 1
+    local output="${file%.enc}"
+    openssl enc -d -aes-256-cbc -in "$file" -out "$output"
+}
+
+checksum() {
+    local file="$1"
+    [[ -z "$file" || ! -f "$file" ]] && return 1
+    echo "  MD5:    $(md5sum "$file" | cut -d' ' -f1)"
+    echo "  SHA1:   $(sha1sum "$file" | cut -d' ' -f1)"
+    echo "  SHA256: $(sha256sum "$file" | cut -d' ' -f1)"
+}
+
+extract() {
+    if [ -f "$1" ]; then
+        case "$1" in
+            *.tar.bz2)   tar xjf "$1"     ;;
+            *.tar.gz)    tar xzf "$1"     ;;
+            *.bz2)       bunzip2 "$1"     ;;
+            *.rar)       unrar e "$1"     ;;
+            *.gz)        gunzip "$1"      ;;
+            *.tar)       tar xf "$1"      ;;
+            *.tbz2)      tar xjf "$1"     ;;
+            *.tgz)       tar xzf "$1"     ;;
+            *.zip)       unzip "$1"       ;;
+            *.Z)         uncompress "$1"  ;;
+            *.7z)        7z x "$1"        ;;
+            *)           echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+cp2clip() {
+    [[ $# -eq 0 ]] && return 1
+    [[ ! -f "$1" ]] && return 1
+    if command -v termux-clipboard-set >/dev/null; then
+        cat "$1" | termux-clipboard-set
+    elif command -v xclip >/dev/null; then
+        cat "$1" | xclip -selection clipboard
+    elif command -v xsel >/dev/null; then
+        cat "$1" | xsel --clipboard --input
+    fi
+}
+
+copyclip() { termux-clipboard-set < "$1"; }
+
+reveal() {
+    printf "\n\033[1;36m[ NETWORK REVEAL ]\033[0m\n"
+    printf "\033[1;35mLocal IP  :: \033[1;37m%s\033[0m\n" "$(ifconfig wlan0 2>/dev/null | awk '/inet /{print $2}')"
+    printf "\033[1;35mPublic IP :: \033[1;37m%s\033[0m\n" "$(curl -s https://api.ipify.org)"
+    printf "\n"
+}
+
+bring() {
+    [[ -z "$1" ]] && return 1
+    cp -rf "$@" .
+}
+
+xport() {
+    [[ -z "$1" ]] && return 1
+    cp -rf "$@" "/sdcard/Download/"
+}
+
+setname() {
+    [[ -z "$1" ]] && return 1
+    echo "$1" > ~/.termux_user
+}
+
+setlook() { termux-nf; }
+setstyle() { termux-color; }
+setprompt() { p10k configure; }
+ftext() { rg -i "$1"; }
+findbig() { fd -S +100M; }
+
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
