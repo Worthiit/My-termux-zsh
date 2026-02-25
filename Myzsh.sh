@@ -16,9 +16,9 @@ pkg upgrade -y -o Dpkg::Options::="--force-confnew" >/dev/null 2>&1
 pkg install -y -o Dpkg::Options::="--force-confnew" \
     zsh git gh curl wget termux-api ncurses-utils make \
     clang tar bat grep eza fzf openssl python jq fontconfig \
-    zoxide fd ripgrep neovim >/dev/null 2>&1
+    zoxide fd ripgrep neovim dialog >/dev/null 2>&1
 
-bar "Core dependencies and new tools (zoxide, fd, rg, nvim) locked."
+bar "Core dependencies and new tools locked."
 
 mkdir -p ~/.termux
 touch ~/.hushlogin
@@ -33,9 +33,11 @@ BASE_URL="https://raw.githubusercontent.com/$REPO_USER/$REPO_NAME/$BRANCH"
 curl -fsSL "$BASE_URL/.zshrc" -o ~/.zshrc
 curl -fsSL "$BASE_URL/.p10k.zsh" -o ~/.p10k.zsh
 curl -fsSL "$BASE_URL/motd.sh" -o ~/motd.sh
+curl -fsSL "$BASE_URL/gettools.sh" -o ~/gettools.sh
 curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-nf" -o $PREFIX/bin/termux-nf
 curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-color" -o $PREFIX/bin/termux-color
-chmod +x ~/motd.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color
+
+chmod +x ~/motd.sh ~/gettools.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color
 
 bar "Repository configs synced."
 
