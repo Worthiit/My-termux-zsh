@@ -46,9 +46,9 @@ I built a CLI interface to let you instantly bulk-install 30+ God-Tier Termux to
 
 Type this to open the menu:
 ```bash
-arsenal
+ninja
 ```
-It installs what you pick and spits out a cheat sheet on how to use them immediately.
+It installs what you pick and spits out a cheat sheet on how to use them immediately.( still incomplete )
 
 ###  Automated System Tricks
 I automated the annoying manual stuff in `.zshrc`.
