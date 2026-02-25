@@ -10,12 +10,12 @@ C_RST='\033[0m'
 
 clear
 
-user=$(cat ~/.termux_user 2>/dev/null || echo "Termux")
+user=$(cat ~/.termux_user 2>/dev/null || echo "Reinhart")
 model=$(getprop ro.product.model 2>/dev/null || echo "Android")
 kernel=$(uname -r | cut -d'-' -f1)
-uptime=$(uptime | awk -F'( |,|:)+' '{if ($7=="min") print $6"m"; else print $6"h "$7"m"}')
-pkgs=$(dpkg --get-selections 2>/dev/null | grep -v deinstall | wc -l)
-shell_v=$(zsh --version | awk '{print $2}')
+uptime=$(awk '{printf "%dh %dm\n", $1/3600, ($1%3600)/60}' /proc/uptime 2>/dev/null)
+pkgs=$(ls $PREFIX/var/lib/dpkg/info/*.list 2>/dev/null | wc -l)
+shell_v=$ZSH_VERSION
 storage=$(df -h /data 2>/dev/null | awk 'NR==2 {print $3 "/" $2}')
 
 if [ -e /sys/class/power_supply/battery/capacity ]; then
@@ -91,10 +91,10 @@ quotes=(
 )
 tips=(
     "Use 'Ctrl+R' to search history backward."
-    "Type '!!' to run the last command again."
+    "Type 'cd <folder>' (Zoxide enabled for fast jumps)."
     "Alt+. inserts the last argument of the previous command."
-    "Use 'cd -' to toggle between the last two directories."
-    "Command 'top' shows real-time process info."
+    "Type 'ftext <string>' to fast-search file contents."
+    "Type 'findbig' to locate files > 100MB."
 )
 
 rand_q=$(( RANDOM % ${#quotes[@]} + 1 ))
