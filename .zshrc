@@ -122,6 +122,7 @@ mvg() { if [ -d "$2" ]; then mv "$1" "$2" && cd "$2" || return; else mv "$1" "$2
 mkdirg() { mkdir -p "$1" && cd "$1" || return; }
 
 setbg() {
+    # 1. Reset Flag
     if [[ "$1" == "--default" ]]; then
         rm -f ~/.termux/background.jpeg
         termux-reload-settings
@@ -129,22 +130,57 @@ setbg() {
         return
     fi
 
+    # 2. Check Storage Access
+    if [ ! -d "$HOME/storage" ]; then
+        echo "\033[1;33m[!] Storage access required. Requesting permission...\033[0m"
+        termux-setup-storage
+        echo "\033[1;33m[!] Please click 'Allow' and try 'setbg' again.\033[0m"
+        return
+    fi
+
+    # 3. Direct Path Argument
+    if [[ -n "$1" ]]; then
+        if [[ -f "$1" ]]; then
+            cp "$1" ~/.termux/background.jpeg
+            termux-reload-settings
+            echo "\033[1;32m[✔] Background updated from path.\033[0m"
+            return
+        else
+            echo "\033[1;31m[✘] File not found: $1\033[0m"
+            return
+        fi
+    fi
+
+    # 4. Interactive Mode
     if ! command -v fzf &> /dev/null; then
-        echo "\033[1;31m[!] fzf is not installed. Run: pkg install fzf\033[0m"
+        echo "\033[1;31m[!] fzf is missing. Run: pkg install fzf\033[0m"
         return
     fi
     
-    echo "\033[1;36m>>> SELECT IMAGE FROM STORAGE (Volume Up/Down to move, Enter to select)...\033[0m"
+    echo "\033[1;36m>>> SCANNING IMAGES (Downloads, Pictures, DCIM)...\033[0m"
+    local img_list
+    
+    # Use 'fd' if available (faster), else 'find'
+    # We explicitly scan safe folders to avoid 0/0 results caused by Android permissions
+    if command -v fd &> /dev/null; then
+        img_list=$(fd -e jpg -e jpeg -e png . ~/storage/downloads ~/storage/pictures ~/storage/dcim 2>/dev/null)
+    else
+        img_list=$(find ~/storage/downloads ~/storage/pictures ~/storage/dcim -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) 2>/dev/null)
+    fi
+
+    if [[ -z "$img_list" ]]; then
+        echo "\033[1;33m[!] No images found in standard folders.\033[0m"
+        return
+    fi
+
     local file
-    file=$(find /sdcard -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) 2>/dev/null | fzf)
+    file=$(echo "$img_list" | fzf --prompt="Wallpaper > " --height=50% --layout=reverse --border)
 
     if [[ -n "$file" ]]; then
         cp "$file" ~/.termux/background.jpeg
         termux-reload-settings
         echo "\033[1;32m[✔] Background updated: $file\033[0m"
-        echo "\033[1;33m[!] Note: If transparency is low, you might not see it.\033[0m"
-    else
-        echo "\033[1;31m[!] No file selected.\033[0m"
+        echo "\033[1;30m(If transparency is too low, you might not see it)\033[0m"
     fi
 }
 
@@ -247,46 +283,3 @@ extract() {
 }
 
 cp2clip() {
-    [[ $# -eq 0 ]] && return 1
-    [[ ! -f "$1" ]] && return 1
-    if command -v termux-clipboard-set >/dev/null; then
-        cat "$1" | termux-clipboard-set
-    elif command -v xclip >/dev/null; then
-        cat "$1" | xclip -selection clipboard
-    elif command -v xsel >/dev/null; then
-        cat "$1" | xsel --clipboard --input
-    fi
-}
-
-copyclip() { termux-clipboard-set < "$1"; }
-
-reveal() {
-    printf "\n\033[1;36m[ NETWORK REVEAL ]\033[0m\n"
-    printf "\033[1;35mLocal IP  :: \033[1;37m%s\033[0m\n" "$(ifconfig wlan0 2>/dev/null | awk '/inet /{print $2}')"
-    printf "\033[1;35mPublic IP :: \033[1;37m%s\033[0m\n" "$(curl -s https://api.ipify.org)"
-    printf "\n"
-}
-
-bring() {
-    [[ -z "$1" ]] && return 1
-    cp -rf "$@" .
-}
-
-xport() {
-    [[ -z "$1" ]] && return 1
-    cp -rf "$@" "/sdcard/Download/"
-}
-
-setname() {
-    [[ -z "$1" ]] && return 1
-    echo "$1" > ~/.termux_user
-}
-
-setlook() { termux-nf; }
-setstyle() { termux-color; }
-setprompt() { p10k configure; }
-ftext() { rg -i "$1"; }
-findbig() { fd -S +100M; }
-
-zinit ice depth=1; zinit light romkatv/powerlevel10k
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
