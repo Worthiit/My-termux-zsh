@@ -28,6 +28,8 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/m
 | Command | Action |
 | :--- | :--- |
 | `up` | Update & Upgrade System |
+| `ninja` | Open the Tool Arsenal (Install 30+ Tools) |
+| `setbg` | Set custom background image from storage |
 | `setname` | Change the username shown in the welcome screen |
 | `setlook` | Change Fonts instantly |
 | `setstyle`| Change Color Scheme |
