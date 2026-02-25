@@ -48,7 +48,7 @@ arsenal
 ```
 It installs what you pick and spits out a cheat sheet on how to use them immediately.
 
-### ⚙️ Automated System Tricks
+###  Automated System Tricks
 I automated the annoying manual stuff in `.zshrc`.
 - **Auto-LS:** Just `cd` into a directory, and it will automatically list all files visually using `eza`.
 - **`mkcd <folder>`:** Creates a folder and instantly jumps into it.
