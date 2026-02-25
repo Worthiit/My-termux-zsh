@@ -16,7 +16,7 @@ echo -e "\n${C_CYN}[+] Installing core tools...${C_RST}"
 pkg install -y -o Dpkg::Options::="--force-confnew" \
     zsh git gh curl wget termux-api ncurses-utils make \
     clang tar bat grep eza fzf openssl python jq fontconfig \
-    zoxide fd ripgrep neovim dialog fastfetch unzip unrar gitstatus
+    zoxide fd ripgrep neovim dialog fastfetch unzip unrar
 
 # 2. Setup Directories
 mkdir -p ~/.termux ~/.config/fastfetch
@@ -54,7 +54,5 @@ termux-reload-settings
 rm -f ~/.bashrc
 chsh -s zsh
 
-echo -e "\n${C_GRN}>>> SETUP COMPLETE. ASKING FOR STORAGE PERMISSION...${C_RST}"
-termux-setup-storage
-echo -e "\n${C_GRN}>>> RESTART TERMUX NOW.${C_RST}\n"
+echo -e "\n${C_GRN}>>> SETUP COMPLETE. RESTART TERMUX NOW.${C_RST}\n"
 exit 0
