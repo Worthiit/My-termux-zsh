@@ -117,7 +117,7 @@ fi
 
 chpwd() { eza --icons -lgha --group-directories-first; }
 mkcd() { mkdir -p "$1" && cd "$1"; }
-cpg() { if[ -d "$2" ]; then cp "$1" "$2" && cd "$2" || return; else cp "$1" "$2"; fi }
+cpg() { if [ -d "$2" ]; then cp "$1" "$2" && cd "$2" || return; else cp "$1" "$2"; fi }
 mvg() { if [ -d "$2" ]; then mv "$1" "$2" && cd "$2" || return; else mv "$1" "$2"; fi }
 mkdirg() { mkdir -p "$1" && cd "$1" || return; }
 
