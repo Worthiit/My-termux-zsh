@@ -46,8 +46,11 @@ chmod +x ~/motd.sh ~/ninja.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color
 echo -e "\n${C_CYN}[+] Applying aesthetics...${C_RST}"
 curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf
 
-# We do NOT run termux-reload-settings here to prevent crash
+# Removing old shell config
 rm -f ~/.bashrc
+
+# Switching shell
 chsh -s zsh
 
 echo -e "\n${C_GRN}>>> SETUP COMPLETE. PLEASE SWIPE AWAY AND RESTART TERMUX.${C_RST}\n"
+exit 0
