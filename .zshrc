@@ -36,9 +36,7 @@ zi ice wait"0" lucid; snippet OMZL::key-bindings.zsh
 zi ice wait"0" lucid; load zsh-users/zsh-autosuggestions
 zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"; load zdharma-continuum/fast-syntax-highlighting
 
-zi for \
-    ohmyzsh/ohmyzsh path:plugins/extract
-
+zi for ohmyzsh/ohmyzsh path:plugins/extract
 zi ice zsh-users/zsh-completions
 zi ice atload'bindkey "^I" menu-select; bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete'
 zi light marlonrichert/zsh-autocomplete
@@ -62,24 +60,50 @@ alias ports='netstat -tulpn'
 alias startssh='ssh -p 8022 localhost'
 alias stopssh='pkill sshd'
 alias reload="termux-reload-settings"
-
 alias cd="z"
 alias ..='cd ..'
 alias ...='cd ../..'
 alias h='cd ~'
 alias dl="cd /sdcard/Download"
 alias sd="cd /sdcard"
-
 alias ls="eza --icons"
 alias ll="eza --icons -lgha --group-directories-first"
 alias la="eza --icons -lgha --group-directories-first"
 alias lt="eza --icons --tree"
 alias cat='bat --theme OneHalfDark -p'
-alias mkdir='mkdir -p'
-
 alias texpo="mkdir -p /sdcard/Download/Tmux-expo && cp -r -t /sdcard/Download/Tmux-expo"
 alias rep="termux-clipboard-get >"
 alias runclip='termux-clipboard-get > temp_script.py && python3 temp_script.py'
+alias arsenal="~/gettools.sh"
+
+chpwd() {
+    eza --icons -lgha --group-directories-first
+}
+
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+extract() {
+    if [ -f "$1" ]; then
+        case "$1" in
+            *.tar.bz2)   tar xjf "$1"     ;;
+            *.tar.gz)    tar xzf "$1"     ;;
+            *.bz2)       bunzip2 "$1"     ;;
+            *.rar)       unrar e "$1"     ;;
+            *.gz)        gunzip "$1"      ;;
+            *.tar)       tar xf "$1"      ;;
+            *.tbz2)      tar xjf "$1"     ;;
+            *.tgz)       tar xzf "$1"     ;;
+            *.zip)       unzip "$1"       ;;
+            *.Z)         uncompress "$1"  ;;
+            *.7z)        7z x "$1"        ;;
+            *)           echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
 
 copyclip() { termux-clipboard-set < "$1" && echo "\e[32m[✔] Copied $1\e[0m"; }
 
@@ -109,7 +133,6 @@ setname() {
 setlook() { termux-nf; }
 setstyle() { termux-color; }
 setprompt() { p10k configure; }
-
 ftext() { rg -i "$1"; }
 findbig() { fd -S +100M; }
 
