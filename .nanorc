@@ -1,0 +1,7 @@
+set linenumbers
+set softwrap
+set matchbrackets "(<[{)>]}"
+set tabsize 4
+set constantshow
+set autoindent
+include "/data/data/com.termux/files/usr/share/nano/*.nanorc"
