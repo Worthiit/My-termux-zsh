@@ -29,7 +29,7 @@ curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.s
 | :--- | :--- |
 | `up` | Update & Upgrade System |
 | `ninja` | Open the Tool Arsenal (Install 30+ Tools) |
-| `setbg` | Set custom background image from storage |
+| `setbg` | Set custom background image from storage , still incomplete |
 | `setname` | Change the username shown in the welcome screen |
 | `setlook` | Change Fonts instantly |
 | `setstyle`| Change Color Scheme |
