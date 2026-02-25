@@ -38,57 +38,36 @@ PKGS[28]="gh"; USAGE[28]="gh auth login"
 PKGS[29]="termux-services"; USAGE[29]="sv up sshd"
 PKGS[30]="micro"; USAGE[30]="micro file.txt"
 
-CHOICES=$(dialog --clear --title "REINHART ARSENAL" --checklist "Select tools to install (Space to select, Enter to confirm):" 22 75 15 \
-1 "apktool (Reverse engineer APKs)" off \
-2 "lazygit (Git TUI)" off \
-3 "jujutsu (Git-compatible VCS)" off \
-4 "tmate (Instant terminal sharing)" off \
-5 "yt-dlp (YouTube downloader)" off \
-6 "ffmpeg (Video/Audio converter)" off \
-7 "tmux (Terminal multiplexer)" off \
-8 "nmap (Network scanner)" off \
-9 "proot-distro (Linux distros in Termux)" off \
-10 "ncdu (Disk usage analyzer)" off \
-11 "aria2 (Fast download utility)" off \
-12 "htop (Interactive process viewer)" off \
-13 "fastfetch (System info utility)" off \
-14 "imagemagick (Image editor)" off \
-15 "rclone (Cloud storage sync)" off \
-16 "jq (JSON processor)" off \
-17 "yq (YAML processor)" off \
-18 "socat (Multipurpose relay)" off \
-19 "tsu (Termux root access)" off \
-20 "ranger (Terminal file manager)" off \
-21 "termshark (Terminal Wireshark UI)" off \
-22 "tcpdump (Network packet analyzer)" off \
-23 "aapt (Android Asset Packaging)" off \
-24 "apksigner (APK signing utility)" off \
-25 "zstd (Zstandard compression)" off \
-26 "openssh (SSH server/client)" off \
-27 "wget (Network downloader)" off \
-28 "gh (GitHub CLI)" off \
-29 "termux-services (Service management)" off \
-30 "micro (Modern terminal editor)" off \
-3>&1 1>&2 2>&3)
+exec 3>&1
+CHOICES=$(dialog --clear --title "REINHART ARSENAL" --checklist "Select tools (Space to select, Enter to confirm):" 22 75 15 \
+1 "apktool" off 2 "lazygit" off 3 "jujutsu" off 4 "tmate" off 5 "yt-dlp" off \
+6 "ffmpeg" off 7 "tmux" off 8 "nmap" off 9 "proot-distro" off 10 "ncdu" off \
+11 "aria2" off 12 "htop" off 13 "fastfetch" off 14 "imagemagick" off 15 "rclone" off \
+16 "jq" off 17 "yq" off 18 "socat" off 19 "tsu" off 20 "ranger" off \
+21 "termshark" off 22 "tcpdump" off 23 "aapt" off 24 "apksigner" off 25 "zstd" off \
+26 "openssh" off 27 "wget" off 28 "gh" off 29 "termux-services" off 30 "micro" off \
+2>&1 1>&3)
+EXIT_CODE=$?
+exec 3>&-
 
-clear
-
-if [ -z "$CHOICES" ]; then
+if [ $EXIT_CODE -ne 0 ] || [ -z "$CHOICES" ]; then
+    clear
     exit 0
 fi
 
+clear
 echo -e "\033[1;36m>>> INITIALIZING DEPLOYMENT...\033[0m\n"
+pkg update -y >/dev/null 2>&1
 
-for choice in $CHOICES; do
-    choice=$(echo $choice | tr -d '"')
+CHOICES_CLEAN=$(echo "$CHOICES" | tr -d '"')
+for choice in $CHOICES_CLEAN; do
     pkg_name=${PKGS[$choice]}
     echo -e "\033[1;34m[+] Compiling $pkg_name...\033[0m"
     pkg install -y "$pkg_name" >/dev/null 2>&1
 done
 
 echo -e "\n\033[1;32m>>> DEPLOYMENT COMPLETE. CHEAT SHEET:\033[0m\n"
-for choice in $CHOICES; do
-    choice=$(echo $choice | tr -d '"')
+for choice in $CHOICES_CLEAN; do
     printf "\033[1;35m%-15s\033[0m : \033[1;37m%s\033[0m\n" "${PKGS[$choice]}" "${USAGE[$choice]}"
 done
 echo ""
