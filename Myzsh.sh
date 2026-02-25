@@ -5,7 +5,7 @@ C_CYN='\033[1;36m'
 C_RST='\033[0m'
 
 clear
-echo -e "\n${C_CYN}>>> MYZSH INSTALLER // INITIALIZING.${C_RST}\n"
+echo -e "\n${C_CYN}>>> MYZSH INSTALLER // Grab a coffee while it's installing...${C_RST}\n"
 
 # Prevent dpkg lock issues
 rm -f $PREFIX/var/lib/dpkg/lock >/dev/null 2>&1
@@ -54,5 +54,5 @@ termux-reload-settings
 rm -f ~/.bashrc
 chsh -s zsh
 
-echo -e "\n${C_GRN}>>> SETUP COMPLETE. PLEASE SWIPE AWAY AND RESTART TERMUX.${C_RST}\n"
+echo -e "\n${C_GRN}>>> SETUP COMPLETE , PLEASE RESTART TERMUX...${C_RST}\n"
 exit 0
