@@ -56,14 +56,20 @@ if [ $EXIT_CODE -ne 0 ] || [ -z "$CHOICES" ]; then
 fi
 
 clear
-echo -e "\033[1;36m>>> INITIALIZING DEPLOYMENT...\033[0m\n"
-pkg update -y >/dev/null 2>&1
+echo -e "\033[1;36m>>> UPDATING PACKAGE LIST...\033[0m\n"
+pkg update -y
 
 CHOICES_CLEAN=$(echo "$CHOICES" | tr -d '"')
 for choice in $CHOICES_CLEAN; do
     pkg_name=${PKGS[$choice]}
-    echo -e "\033[1;34m[+] Compiling $pkg_name...\033[0m"
-    pkg install -y "$pkg_name" >/dev/null 2>&1
+    echo -e "\n\033[1;34m[+] INSTALLING: $pkg_name...\033[0m"
+    
+    if pkg install -y "$pkg_name"; then
+        echo -e "\033[1;32m[✔] $pkg_name installed successfully.\033[0m"
+    else
+        echo -e "\033[1;31m[✘] Failed to install $pkg_name.\033[0m"
+    fi
+    sleep 1
 done
 
 echo -e "\n\033[1;32m>>> DEPLOYMENT COMPLETE. CHEAT SHEET:\033[0m\n"
