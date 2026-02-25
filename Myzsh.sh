@@ -5,7 +5,7 @@ C_CYN='\033[1;36m'
 C_RST='\033[0m'
 
 clear
-echo -e "\n${C_CYN}>>> MYZSH INSTALLER // INITIATING.${C_RST}\n"
+echo -e "\n${C_CYN}>>> MYZSH INSTALLER // INITIALIZING.${C_RST}\n"
 
 echo -e "${C_CYN}[+] Updating system repositories...${C_RST}"
 pkg update -y -o Dpkg::Options::="--force-confnew"
@@ -33,7 +33,7 @@ curl -fsSL "$BASE_URL/.zshenv" -o ~/.zshenv
 curl -fsSL "$BASE_URL/.nanorc" -o ~/.nanorc
 curl -fsSL "$BASE_URL/.p10k.zsh" -o ~/.p10k.zsh
 curl -fsSL "$BASE_URL/motd.sh" -o ~/motd.sh
-curl -fsSL "$BASE_URL/gettools.sh" -o ~/gettools.sh
+curl -fsSL "$BASE_URL/ninja.sh" -o ~/ninja.sh
 curl -fsSL "$BASE_URL/termux.properties" -o ~/.termux/termux.properties
 curl -fsSL "$BASE_URL/colors.properties" -o ~/.termux/colors.properties
 curl -fsSL "$BASE_URL/config.jsonc" -o ~/.config/fastfetch/config.jsonc
@@ -41,17 +41,13 @@ curl -fsSL "$BASE_URL/config.jsonc" -o ~/.config/fastfetch/config.jsonc
 curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-nf" -o $PREFIX/bin/termux-nf
 curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-color" -o $PREFIX/bin/termux-color
 
-chmod +x ~/motd.sh ~/gettools.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color
-
-echo -e "\n${C_CYN}[+] Compiling Zsh Plugins (Pre-warming cache, please wait)...${C_RST}"
-zsh -c 'source ~/.zshrc' >/dev/null 2>&1
+chmod +x ~/motd.sh ~/ninja.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color
 
 echo -e "\n${C_CYN}[+] Applying aesthetics...${C_RST}"
-curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf >/dev/null 2>&1
+curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf
+termux-reload-settings
 
 rm -f ~/.bashrc
 chsh -s zsh
 
-echo -e "\n${C_GRN}>>> SETUP COMPLETE. <<<${C_RST}"
-echo -e "${C_GRN}>>> CLOSE TERMUX COMPLETELY (SWIPE IT AWAY) AND REOPEN IT. <<<${C_RST}\n"
-exit 0
+echo -e "\n${C_GRN}>>> SETUP COMPLETE. PLEASE SWIPE AWAY AND RESTART TERMUX.${C_RST}\n"
