@@ -37,12 +37,24 @@ ZINIT[HOME_DIR]="$HOME/.local/share/zinit"
 ZINIT[PLUGINS_DIR]="$ZINIT[HOME_DIR]/plugins"
 ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]=1
 
-zi ice wait"0" lucid; snippet OMZL::completion.zsh
-zi ice wait"0" lucid; snippet OMZL::git.zsh
-zi ice wait"0" lucid; snippet OMZL::key-bindings.zsh
-zi ice wait"0" lucid; load zsh-users/zsh-autosuggestions
-zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"; load zdharma-continuum/fast-syntax-highlighting
-zi ice wait"0" lucid; load zsh-users/zsh-completions
+zi ice wait"0" lucid
+zi snippet OMZL::completion.zsh
+
+zi ice wait"0" lucid
+zi snippet OMZL::git.zsh
+
+zi ice wait"0" lucid
+zi snippet OMZL::key-bindings.zsh
+
+zi ice wait"0" lucid
+zi load zsh-users/zsh-autosuggestions
+
+zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"
+zi load zdharma-continuum/fast-syntax-highlighting
+
+zi ice wait"0" lucid
+zi load zsh-users/zsh-completions
+
 zi ice wait"0" lucid atload'bindkey "^I" menu-select; bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete'
 zi load marlonrichert/zsh-autocomplete
 
@@ -73,7 +85,7 @@ alias cd="z"
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias .....='cd ../../..'
+alias .....='cd ../../../..'
 alias h='cd ~'
 alias ls="eza --icons"
 alias la="eza --icons -lgha --group-directories-first"
@@ -305,13 +317,6 @@ xport() {
 setname() {
     [[ -z "$1" ]] && return 1
     echo "$1" > ~/.termux_user
-}
-
-expo() {
-    [[ -z "$1" ]] && return 1
-    local dest="$HOME/storage/downloads/Tmux-expo"
-    mkdir -p "$dest"
-    cp -r "$1" "$dest" && echo -e "\033[1;32m[✔] Saved to $dest\033[0m"
 }
 
 setlook() { termux-nf; }
