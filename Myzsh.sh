@@ -50,6 +50,4 @@ termux-reload-settings
 rm -f ~/.bashrc
 chsh -s zsh
 
-echo -e "\n${C_GRN}>>> SETUP COMPLETE. HOT-LOADING ZSH NOW.${C_RST}\n"
-sleep 1
-exec zsh -l
+echo -e "\n${C_GRN}>>> SETUP COMPLETE. PLEASE SWIPE AWAY AND RESTART TERMUX.${C_RST}\n"
