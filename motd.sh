@@ -18,7 +18,7 @@ pkgs=$(ls $PREFIX/var/lib/dpkg/info/*.list 2>/dev/null | wc -l)
 shell_v=$ZSH_VERSION
 storage=$(df -h /data 2>/dev/null | awk 'NR==2 {print $3 "/" $2}')
 
-if[ -e /sys/class/power_supply/battery/capacity ]; then
+if [ -e /sys/class/power_supply/battery/capacity ]; then
     bat_lvl="$(cat /sys/class/power_supply/battery/capacity)%"
 else
     bat_lvl="N/A"
