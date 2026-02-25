@@ -95,8 +95,8 @@ alias mkdir='mkdir -p'
 alias psu="ps aux"
 alias psg="ps aux | grep -i"
 alias kill9="kill -9"
-alias startssh='termux-ssh'
-alias stopssh='termux-ssh stop'
+alias startssh='ssh -p 8022 localhost'
+alias stopssh='pkill sshd'
 alias myip="curl ifconfig.me"
 alias ports='netstat -tulpn'
 alias speedtest="curl -s https://raw.githubusercontent.com/noreplyui5/speedtest-cli/master/speedtest.py | python"
@@ -107,7 +107,7 @@ alias reload="termux-reload-settings"
 alias texpo="mkdir -p /sdcard/Download/Tmux-expo && cp -r -t /sdcard/Download/Tmux-expo"
 alias rep="termux-clipboard-get >"
 alias runclip='termux-clipboard-get > temp_script.py && python3 temp_script.py'
-alias arsenal="~/gettools.sh"
+alias ninja="bash ~/ninja.sh"
 
 if command -v batcat &>/dev/null; then
     alias cat='batcat --theme OneHalfDark -p'
@@ -117,9 +117,36 @@ fi
 
 chpwd() { eza --icons -lgha --group-directories-first; }
 mkcd() { mkdir -p "$1" && cd "$1"; }
-cpg() { if [ -d "$2" ]; then cp "$1" "$2" && cd "$2" || return; else cp "$1" "$2"; fi }
+cpg() { if[ -d "$2" ]; then cp "$1" "$2" && cd "$2" || return; else cp "$1" "$2"; fi }
 mvg() { if [ -d "$2" ]; then mv "$1" "$2" && cd "$2" || return; else mv "$1" "$2"; fi }
 mkdirg() { mkdir -p "$1" && cd "$1" || return; }
+
+setbg() {
+    if [[ "$1" == "--default" ]]; then
+        rm -f ~/.termux/background.jpeg
+        termux-reload-settings
+        echo "\033[1;32m[✔] Background reset to default.\033[0m"
+        return
+    fi
+
+    if ! command -v fzf &> /dev/null; then
+        echo "\033[1;31m[!] fzf is not installed. Run: pkg install fzf\033[0m"
+        return
+    fi
+    
+    echo "\033[1;36m>>> SELECT IMAGE FROM STORAGE (Volume Up/Down to move, Enter to select)...\033[0m"
+    local file
+    file=$(find /sdcard -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) 2>/dev/null | fzf)
+
+    if [[ -n "$file" ]]; then
+        cp "$file" ~/.termux/background.jpeg
+        termux-reload-settings
+        echo "\033[1;32m[✔] Background updated: $file\033[0m"
+        echo "\033[1;33m[!] Note: If transparency is low, you might not see it.\033[0m"
+    else
+        echo "\033[1;31m[!] No file selected.\033[0m"
+    fi
+}
 
 fkill() {
     local pid
