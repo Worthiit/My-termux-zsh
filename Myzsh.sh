@@ -7,6 +7,10 @@ C_RST='\033[0m'
 clear
 echo -e "\n${C_CYN}>>> MYZSH INSTALLER // INITIALIZING.${C_RST}\n"
 
+# Prevent dpkg lock issues
+rm -f $PREFIX/var/lib/dpkg/lock >/dev/null 2>&1
+rm -f $PREFIX/var/lib/dpkg/lock-frontend >/dev/null 2>&1
+
 echo -e "${C_CYN}[+] Updating system repositories...${C_RST}"
 pkg update -y -o Dpkg::Options::="--force-confnew"
 pkg upgrade -y -o Dpkg::Options::="--force-confnew"
@@ -44,12 +48,10 @@ curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/oth
 chmod +x ~/motd.sh ~/ninja.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color
 
 echo -e "\n${C_CYN}[+] Applying aesthetics...${C_RST}"
-curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf
+curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf >/dev/null 2>&1
+termux-reload-settings
 
-# Removing old shell config
 rm -f ~/.bashrc
-
-# Switching shell
 chsh -s zsh
 
 echo -e "\n${C_GRN}>>> SETUP COMPLETE. PLEASE SWIPE AWAY AND RESTART TERMUX.${C_RST}\n"
