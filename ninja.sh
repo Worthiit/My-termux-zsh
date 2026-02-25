@@ -1,7 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 if ! command -v dialog &> /dev/null; then
-    echo -e "\033[1;33m[!] Installing UI dependencies...\033[0m"
     pkg install -y dialog >/dev/null 2>&1
 fi
 
@@ -59,7 +58,7 @@ CHOICES=$(dialog --clear \
 EXIT_CODE=$?
 exec 3>&-
 
-if[ $EXIT_CODE -ne 0 ] || [ -z "$CHOICES" ]; then
+if [ $EXIT_CODE -ne 0 ] || [ -z "$CHOICES" ]; then
     clear
     echo -e "\033[1;31m[!] Mission Aborted.\033[0m"
     exit 0
