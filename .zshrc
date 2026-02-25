@@ -2,10 +2,18 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+[[ -f ~/motd.sh ]] && source ~/motd.sh
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+setopt EXTENDED_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt SHARE_HISTORY
 setopt AUTO_CD
 setopt nonomatch
-setopt HIST_IGNORE_DUPS
-setopt SHARE_HISTORY
 
 ZINIT_HOME="$HOME/.local/share/zinit/zinit.git"
 if [[ ! -f "$ZINIT_HOME/zinit.zsh" ]]; then
@@ -29,16 +37,18 @@ zi ice wait"0" lucid; load zsh-users/zsh-autosuggestions
 zi ice wait"0" lucid atinit"ZINIT[COMPLIST_HIGHLIGHT]='preview'"; load zdharma-continuum/fast-syntax-highlighting
 
 zi for \
-    ohmyzsh/ohmyzsh path:plugins/z \
     ohmyzsh/ohmyzsh path:plugins/extract
 
 zi ice zsh-users/zsh-completions
 zi ice atload'bindkey "^I" menu-select; bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete'
 zi light marlonrichert/zsh-autocomplete
 
+eval "$(zoxide init zsh)"
+
 alias q="exit"
 alias c="clear"
 alias cls="clear"
+alias v="nvim"
 alias up='pkg update -y && pkg upgrade -y'
 alias rf='rm -rf'
 alias g='git'
@@ -53,6 +63,7 @@ alias startssh='ssh -p 8022 localhost'
 alias stopssh='pkill sshd'
 alias reload="termux-reload-settings"
 
+alias cd="z"
 alias ..='cd ..'
 alias ...='cd ../..'
 alias h='cd ~'
@@ -60,6 +71,7 @@ alias dl="cd /sdcard/Download"
 alias sd="cd /sdcard"
 
 alias ls="eza --icons"
+alias ll="eza --icons -lgha --group-directories-first"
 alias la="eza --icons -lgha --group-directories-first"
 alias lt="eza --icons --tree"
 alias cat='bat --theme OneHalfDark -p'
@@ -73,7 +85,7 @@ copyclip() { termux-clipboard-set < "$1" && echo "\e[32m[✔] Copied $1\e[0m"; }
 
 reveal() {
     printf "\n\033[1;36m[ NETWORK REVEAL ]\033[0m\n"
-    printf "\033[1;35mLocal IP  :: \033[1;37m%s\033[0m\n" "$(ifconfig wlan0 | grep 'inet ' | awk '{print $2}')"
+    printf "\033[1;35mLocal IP  :: \033[1;37m%s\033[0m\n" "$(ifconfig wlan0 2>/dev/null | awk '/inet /{print $2}')"
     printf "\033[1;35mPublic IP :: \033[1;37m%s\033[0m\n" "$(curl -s https://api.ipify.org)"
     printf "\n"
 }
@@ -98,8 +110,8 @@ setlook() { termux-nf; }
 setstyle() { termux-color; }
 setprompt() { p10k configure; }
 
-ftext() { grep -iIHrn --color=always "$1" . | less -r; }
+ftext() { rg -i "$1"; }
+findbig() { fd -S +100M; }
 
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-[[ -f ~/motd.sh ]] && source ~/motd.sh
