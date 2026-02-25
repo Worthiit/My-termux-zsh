@@ -7,14 +7,15 @@ C_RST='\033[0m'
 clear
 echo -e "\n${C_CYN}>>> MYZSH INSTALLER // INITIALIZING.${C_RST}\n"
 
-pkg update -y -o Dpkg::Options::="--force-confnew" >/dev/null 2>&1
-pkg upgrade -y -o Dpkg::Options::="--force-confnew" >/dev/null 2>&1
+echo -e "${C_CYN}[+] Updating system repositories...${C_RST}"
+pkg update -y -o Dpkg::Options::="--force-confnew"
+pkg upgrade -y -o Dpkg::Options::="--force-confnew"
+
+echo -e "\n${C_CYN}[+] Installing core dependencies...${C_RST}"
 pkg install -y -o Dpkg::Options::="--force-confnew" \
     zsh git gh curl wget termux-api ncurses-utils make \
     clang tar bat grep eza fzf openssl python jq fontconfig \
-    zoxide fd ripgrep neovim dialog fastfetch >/dev/null 2>&1
-
-echo -e "${C_GRN}[✔] Dependencies locked.${C_RST}"
+    zoxide fd ripgrep neovim dialog fastfetch
 
 mkdir -p ~/.termux ~/.config/fastfetch
 touch ~/.hushlogin
@@ -26,6 +27,7 @@ REPO_NAME="My-termux-zsh"
 BRANCH="main"
 BASE_URL="https://raw.githubusercontent.com/$REPO_USER/$REPO_NAME/$BRANCH"
 
+echo -e "\n${C_CYN}[+] Pulling configurations from GitHub...${C_RST}"
 curl -fsSL "$BASE_URL/.zshrc" -o ~/.zshrc
 curl -fsSL "$BASE_URL/.zshenv" -o ~/.zshenv
 curl -fsSL "$BASE_URL/.nanorc" -o ~/.nanorc
@@ -41,12 +43,13 @@ curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/oth
 
 chmod +x ~/motd.sh ~/gettools.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color
 
-echo -e "${C_GRN}[✔] Configs injected.${C_RST}"
-
-curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf >/dev/null 2>&1
+echo -e "\n${C_CYN}[+] Applying aesthetics...${C_RST}"
+curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf
 termux-reload-settings
 
 rm -f ~/.bashrc
 chsh -s zsh
 
-echo -e "\n${C_GRN}>>> SETUP COMPLETE. RESTART TERMUX TO INITIALIZE.${C_RST}\n"
+echo -e "\n${C_GRN}>>> SETUP COMPLETE. HOT-LOADING ZSH NOW.${C_RST}\n"
+sleep 1
+exec zsh -l
