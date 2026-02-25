@@ -38,41 +38,40 @@ PKGS[28]="gh"; USAGE[28]="gh auth login"
 PKGS[29]="termux-services"; USAGE[29]="sv up sshd"
 PKGS[30]="micro"; USAGE[30]="micro file.txt"
 
-exec 3>&1
-CHOICES=$(dialog --clear --title "REINHART ARSENAL" --checklist "Select tools (Space to select, Enter to confirm):" 22 75 15 \
+TEMPFILE=$(mktemp)
+
+dialog --clear --title "REINHART ARSENAL" --checklist "Select tools (Space to select, Enter to confirm):" 22 75 15 \
 1 "apktool" off 2 "lazygit" off 3 "jujutsu" off 4 "tmate" off 5 "yt-dlp" off \
 6 "ffmpeg" off 7 "tmux" off 8 "nmap" off 9 "proot-distro" off 10 "ncdu" off \
 11 "aria2" off 12 "htop" off 13 "fastfetch" off 14 "imagemagick" off 15 "rclone" off \
 16 "jq" off 17 "yq" off 18 "socat" off 19 "tsu" off 20 "ranger" off \
 21 "termshark" off 22 "tcpdump" off 23 "aapt" off 24 "apksigner" off 25 "zstd" off \
 26 "openssh" off 27 "wget" off 28 "gh" off 29 "termux-services" off 30 "micro" off \
-2>&1 1>&3)
+2> "$TEMPFILE"
+
 EXIT_CODE=$?
-exec 3>&-
+CHOICES=$(cat "$TEMPFILE")
+rm -f "$TEMPFILE"
+
+clear
 
 if [ $EXIT_CODE -ne 0 ] || [ -z "$CHOICES" ]; then
-    clear
     exit 0
 fi
 
-clear
 echo -e "\033[1;36m>>> UPDATING PACKAGE LIST...\033[0m\n"
-pkg update -y
+pkg update -y >/dev/null 2>&1
 
 CHOICES_CLEAN=$(echo "$CHOICES" | tr -d '"')
+
 for choice in $CHOICES_CLEAN; do
     pkg_name=${PKGS[$choice]}
     echo -e "\n\033[1;34m[+] INSTALLING: $pkg_name...\033[0m"
-    
-    if pkg install -y "$pkg_name"; then
-        echo -e "\033[1;32m[✔] $pkg_name installed successfully.\033[0m"
-    else
-        echo -e "\033[1;31m[✘] Failed to install $pkg_name.\033[0m"
-    fi
-    sleep 1
+    pkg install -y "$pkg_name"
+    echo -e "\033[1;32m[✔] $pkg_name processed.\033[0m"
 done
 
-echo -e "\n\033[1;32m>>> DEPLOYMENT COMPLETE. CHEAT SHEET:\033[0m\n"
+echo -e "\n\033[1;32m>>> DEPLOYMENT COMPLETE. CHEAT SHEET:\033[0m"
 for choice in $CHOICES_CLEAN; do
     printf "\033[1;35m%-15s\033[0m : \033[1;37m%s\033[0m\n" "${PKGS[$choice]}" "${USAGE[$choice]}"
 done
