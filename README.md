@@ -31,15 +31,15 @@ curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.s
 | `ninja` | Open the Tool Arsenal (Install 30+ Tools) |
 | `kawai` | [NEW] Open the ASCII Art Selector (fzf-powered) |
 | `setbg` | Set custom background image from storage , still incomplete |
-| `setname` | Change the username shown in the welcome screen |
+| `setname <NAME>` | Change the username shown in the welcome screen |
 | `setlook` | Change Fonts instantly |
 | `setstyle`| Change Color Scheme |
 | `setprompt`| Configure the Zsh prompt style |
-| `runclip` | Run Python script directly from Clipboard |
-| `copyclip` | Copy file content to Clipboard |
+| `runclip <file>` | Run Python script directly from Clipboard |
+| `copyclip <file>` | Copy file content to Clipboard |
 | `reveal` | Show hidden IP details |
 | `g` / `gp` / `gl` | Git, Git Push, Git Pull |
-| `texpo` | Backup Tmux to Downloads |
+| `texpo <file> or <folder>` | Backup Tmux to Downloads |
 | `..` | Go back one folder |
 
 ### 🛠 The Arsenal (Tool Manager , still incomplete)
