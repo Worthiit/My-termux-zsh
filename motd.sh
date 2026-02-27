@@ -57,7 +57,6 @@ INFO_LINES=(
     ""
     ""
     ""
-    ""
 )
 
 printf "\n"
