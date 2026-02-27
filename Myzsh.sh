@@ -44,11 +44,9 @@ curl -fsSL "$BASE_URL/kawai" -o $PREFIX/bin/kawai
 chmod +x ~/motd.sh ~/ninja.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color $PREFIX/bin/kawai
 
 echo -e "\n${C_CYN}[+] Syncing ASCII Arsenal...${C_RST}"
-git clone --depth 1 "https://github.com/$REPO_USER/$REPO_NAME.git" /tmp/myzsh_tmp >/dev/null 2>&1
-if [ -d /tmp/myzsh_tmp/ascii ]; then
-    cp -r /tmp/myzsh_tmp/ascii/* ~/.termux/ascii/
-fi
-rm -rf /tmp/myzsh_tmp
+for i in {01..13}; do
+    curl -fsSL "$BASE_URL/ascii/reinhart_${i}.txt" -o ~/.termux/ascii/reinhart_${i}.txt
+done
 
 echo -e "\n${C_CYN}[+] Setting defaults...${C_RST}"
 curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf >/dev/null 2>&1
@@ -70,11 +68,9 @@ EOF
 
 cp ~/.termux/current_art.txt ~/.termux/ascii/default.txt
 termux-reload-settings
-
 rm -f ~/.bashrc
 chsh -s zsh
 
 echo -e "\n${C_GRN}>>> SETUP COMPLETE. RESTART TERMUX NOW.${C_RST}\n"
-
 termux-setup-storage
 exit 0
