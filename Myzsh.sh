@@ -5,7 +5,7 @@ C_CYN='\033[1;36m'
 C_RST='\033[0m'
 
 clear
-echo -e "\n${C_CYN}>>> MYZSH INSTALLER // Grab a coffee while I'm Installing.${C_RST}\n"
+echo -e "\n${C_CYN}>>> MYZSH INSTALLER // INITIALIZING.${C_RST}\n"
 
 echo -e "${C_CYN}[+] Updating system...${C_RST}"
 pkg update -y -o Dpkg::Options::="--force-confnew"
@@ -39,37 +39,36 @@ curl -fsSL "$BASE_URL/config.jsonc" -o ~/.config/fastfetch/config.jsonc
 
 curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-nf" -o $PREFIX/bin/termux-nf
 curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-color" -o $PREFIX/bin/termux-color
-
 curl -fsSL "$BASE_URL/kawai" -o $PREFIX/bin/kawai
 
 chmod +x ~/motd.sh ~/ninja.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color $PREFIX/bin/kawai
+
+echo -e "\n${C_CYN}[+] Syncing ASCII Arsenal...${C_RST}"
+git clone --depth 1 "https://github.com/$REPO_USER/$REPO_NAME.git" /tmp/myzsh_tmp >/dev/null 2>&1
+if [ -d /tmp/myzsh_tmp/ascii ]; then
+    cp -r /tmp/myzsh_tmp/ascii/* ~/.termux/ascii/
+fi
+rm -rf /tmp/myzsh_tmp
 
 echo -e "\n${C_CYN}[+] Setting defaults...${C_RST}"
 curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf >/dev/null 2>&1
 
 cat << 'EOF' > ~/.termux/current_art.txt
-        __
-        / /\
-       / /  \
-      / /    \__________
-     / /      \        /\
-    /_/        \      / /
- ___\ \      ___\____/_/_
-/____\ \    /___________/\
-\     \ \   \           \ \
- \     \ \   \____       \ \
-  \     \ \  /   /\       \ \
-   \   / \_\/   / /        \ \
-    \ /        / /__________\/
-     /        / /     /
-    /        / /     /
-   /________/ /\    /
-   \________\/\ \  /
-               \_\/
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⢿⣿⡻⣿⣿⣿⡿⢋⣴⣆⢹⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣮⣛⣽⡿⠿⠟⣰⣿⣿⣿⠘⠿⢿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⠟⢉⣴⣾⣿⣿⣿⣿⣿⣿⣷⣦⡙⢻⣿⣿⣿⣿
+⣿⣿⣿⠋⣴⣿⡏⢹⣿⣽⣿⣹⣿⡏⢙⣿⣿⣦⡙⣿⣿⣿
+⣿⣿⡏⣼⣿⡿⢋⣁⠄⢀⠖⡀⠌⣙⠻⣿⣿⣿⣧⢹⣿⣿
+⡟⣡⠀⣿⢋⣬⣿⣿⣿⣼⣽⣧⣿⣿⣧⣌⢻⣿⣿⣦⡈⢻
+⣤⣙⠀⡌⢈⠿⠇⠈⣻⣿⣿⣿⡋⠡⢼⡟⠂⢛⣿⠛⠛⣂
+⣿⣿⣇⠂⠰⠿⣺⣿⣿⣤⣤⣼⣿⣿⣺⣧⠄⣨⡇⣼⢿⣿
+⣿⣿⣿⣦⣅⡈⢹⣋⡥⢹⣿⣏⢠⣝⣻⡥⣾⡟⠀⣤⠀⣿
+⣿⣿⣿⣿⣿⡇⢸⣿⣴⣿⠿⣿⣷⣼⣿⣿⢸⡿⠻⡇⢺⣿
+⣿⣿⣿⣿⣿⣧⠸⠋⣉⣉⣂⣛⣋⠻⠋⣃⣤⣶⣶⣥⣼⣿
 EOF
 
 cp ~/.termux/current_art.txt ~/.termux/ascii/default.txt
-
 termux-reload-settings
 
 rm -f ~/.bashrc
