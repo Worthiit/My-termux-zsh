@@ -2,10 +2,11 @@
 
 C_GRN='\033[1;32m'
 C_CYN='\033[1;36m'
+C_RED='\033[1;31m'
 C_RST='\033[0m'
 
 clear
-echo -e "\n${C_CYN}>>> MYZSH INSTALLER // INITIALIZING.${C_RST}\n"
+echo -e "\n${C_CYN}>>> MYZSH INSTALLER // Grab a coffee while I'm installing.${C_RST}\n"
 
 echo -e "${C_CYN}[+] Updating system...${C_RST}"
 pkg update -y -o Dpkg::Options::="--force-confnew"
@@ -51,32 +52,32 @@ if [ -d ~/.temp_sync/ascii ]; then
 fi
 rm -rf ~/.temp_sync
 
-echo -e "\n${C_CYN}[+] Setting defaults...${C_RST}"
+echo -e "\n${C_CYN}[+] Injecting Base Nerd Font...${C_RST}"
 curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf >/dev/null 2>&1
 
-if [ -f ~/.termux/ascii/default.txt ]; then
-    cp ~/.termux/ascii/default.txt ~/.termux/current_art.txt
+if [ -f ~/.termux/font.ttf ]; then
+    fc-cache -fv >/dev/null 2>&1
+    termux-reload-settings
+    echo -e "${C_GRN}[✔] Font System Done bruh.${C_RST}"
 else
-    cat << 'EOF' > ~/.termux/current_art.txt
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⢿⣿⡻⣿⣿⣿⡿⢋⣴⣆⢹⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣮⣛⣽⡿⠿⠟⣰⣿⣿⣿⠘⠿⢿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⠟⢉⣴⣾⣿⣿⣿⣿⣿⣿⣷⣦⡙⢻⣿⣿⣿⣿
-⣿⣿⣿⠋⣴⣿⡏⢹⣿⣽⣿⣹⣿⡏⢙⣿⣿⣦⡙⣿⣿⣿
-⣿⣿⡏⣼⣿⡿⢋⣁⠄⢀⠖⡀⠌⣙⠻⣿⣿⣿⣧⢹⣿⣿
-⡟⣡⠀⣿⢋⣬⣿⣿⣿⣼⣽⣧⣿⣿⣧⣌⢻⣿⣿⣦⡈⢻
-⣤⣙⠀⡌⢈⠿⠇⠈⣻⣿⣿⣿⡋⠡⢼⡟⠂⢛⣿⠛⠛⣂
-⣿⣿⣇⠂⠰⠿⣺⣿⣿⣤⣤⣼⣿⣿⣺⣧⠄⣨⡇⣼⢿⣿
-⣿⣿⣿⣦⣅⡈⢹⣋⡥⢹⣿⣏⢠⣝⣻⡥⣾⡟⠀⣤⠀⣿
-⣿⣿⣿⣿⣿⡇⢸⣿⣴⣿⠿⣿⣷⣼⣿⣿⢸⡿⠻⡇⢺⣿
-⣿⣿⣿⣿⣿⣧⠸⠋⣉⣉⣂⣛⣋⠻⠋⣃⣤⣶⣶⣥⣼⣿
-EOF
+    echo -e "${C_RED}[✘] Font Sync Failed.${C_RST}"
 fi
 
-termux-reload-settings
+if [ ! -f ~/.termux/current_art.txt ]; then
+    if [ -f ~/.termux/ascii/default.txt ]; then
+        cp ~/.termux/ascii/default.txt ~/.termux/current_art.txt
+    else
+        echo "Protocol Reinhart Active" > ~/.termux/current_art.txt
+    fi
+fi
+
+echo -e "\n${C_CYN}[+] Cleaning cache...${C_RST}"
+rm -rf ~/.fonts
+rm -f ~/JetBrainsMono*
+rm -f ~/README.md
 rm -f ~/.bashrc
 chsh -s zsh
 
-echo -e "\n${C_GRN}>>> SETUP COMPLETE. RESTART TERMUX NOW.${C_RST}\n"
+echo -e "\n${C_GRN}>>> SETUP COMPLETE. RESTART TERMUX NOW ಥ⁠‿⁠ಥ.${C_RST}\n"
 termux-setup-storage
 exit 0
