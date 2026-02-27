@@ -6,7 +6,7 @@ C_RED='\033[1;31m'
 C_RST='\033[0m'
 
 clear
-echo -e "\n${C_CYN}>>> MYZSH INSTALLER // INITIALIZING.${C_RST}\n"
+echo -e "\n${C_CYN}>>> MYZSH INSTALLER // GRAB A COFFEE WHILE I'M INSTALLED.${C_RST}\n"
 
 echo -e "${C_CYN}[+] Updating system...${C_RST}"
 pkg update -y -o Dpkg::Options::="--force-confnew"
@@ -65,7 +65,7 @@ if [ ! -f ~/.termux/current_art.txt ]; then
     cp ~/.termux/ascii/default.txt ~/.termux/current_art.txt 2>/dev/null
 fi
 
-echo -e "\n${C_CYN}[+] Cleaning deployment residue...${C_RST}"
+echo -e "\n${C_CYN}[+] Cleaning  cache...${C_RST}"
 rm -f ~/setup.sh
 rm -rf ~/.fonts
 rm -f ~/JetBrainsMono*
@@ -73,6 +73,6 @@ rm -f ~/README.md
 rm -f ~/.bashrc
 chsh -s zsh
 
-echo -e "\n${C_GRN}>>> SETUP COMPLETE. RESTART TERMUX NOW.${C_RST}\n"
+echo -e "\n${C_GRN}>>> SETUP COMPLETE. RESTART TERMUX NOW ಥ⁠‿⁠ಥ .${C_RST}\n"
 termux-setup-storage
 exit 0
