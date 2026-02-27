@@ -55,8 +55,6 @@ INFO_LINES=(
     "${C_LBL}NETWORK  :: ${C_GRY}[ ENCRYPTED ]"
     "${C_GRY}             (Type 'reveal')"
     ""
-    ""
-    ""
 )
 
 printf "\n"
