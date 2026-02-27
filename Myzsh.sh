@@ -44,29 +44,23 @@ curl -fsSL "$BASE_URL/kawai" -o $PREFIX/bin/kawai
 chmod +x ~/motd.sh ~/ninja.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color $PREFIX/bin/kawai
 
 echo -e "\n${C_CYN}[+] Syncing ASCII Arsenal...${C_RST}"
-for i in {01..13}; do
-    curl -fsSL "$BASE_URL/ascii/reinhart_${i}.txt" -o ~/.termux/ascii/reinhart_${i}.txt
-done
+rm -rf /tmp/myzsh_tmp
+git clone --depth 1 --filter=blob:none --sparse "https://github.com/$REPO_USER/$REPO_NAME.git" /tmp/myzsh_tmp >/dev/null 2>&1
+cd /tmp/myzsh_tmp
+git sparse-checkout set ascii >/dev/null 2>&1
+cp -r ascii/* ~/.termux/ascii/
+cd ~
+rm -rf /tmp/myzsh_tmp
 
 echo -e "\n${C_CYN}[+] Setting defaults...${C_RST}"
 curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf >/dev/null 2>&1
 
-cat << 'EOF' > ~/.termux/current_art.txt
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⢿⣿⡻⣿⣿⣿⡿⢋⣴⣆⢹⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣮⣛⣽⡿⠿⠟⣰⣿⣿⣿⠘⠿⢿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⠟⢉⣴⣾⣿⣿⣿⣿⣿⣿⣷⣦⡙⢻⣿⣿⣿⣿
-⣿⣿⣿⠋⣴⣿⡏⢹⣿⣽⣿⣹⣿⡏⢙⣿⣿⣦⡙⣿⣿⣿
-⣿⣿⡏⣼⣿⡿⢋⣁⠄⢀⠖⡀⠌⣙⠻⣿⣿⣿⣧⢹⣿⣿
-⡟⣡⠀⣿⢋⣬⣿⣿⣿⣼⣽⣧⣿⣿⣧⣌⢻⣿⣿⣦⡈⢻
-⣤⣙⠀⡌⢈⠿⠇⠈⣻⣿⣿⣿⡋⠡⢼⡟⠂⢛⣿⠛⠛⣂
-⣿⣿⣇⠂⠰⠿⣺⣿⣿⣤⣤⣼⣿⣿⣺⣧⠄⣨⡇⣼⢿⣿
-⣿⣿⣿⣦⣅⡈⢹⣋⡥⢹⣿⣏⢠⣝⣻⡥⣾⡟⠀⣤⠀⣿
-⣿⣿⣿⣿⣿⡇⢸⣿⣴⣿⠿⣿⣷⣼⣿⣿⢸⡿⠻⡇⢺⣿
-⣿⣿⣿⣿⣿⣧⠸⠋⣉⣉⣂⣛⣋⠻⠋⣃⣤⣶⣶⣥⣼⣿
-EOF
+if [ -f ~/.termux/ascii/default.txt ]; then
+    cp ~/.termux/ascii/default.txt ~/.termux/current_art.txt
+else
+    echo "Default ASCII missing" > ~/.termux/current_art.txt
+fi
 
-cp ~/.termux/current_art.txt ~/.termux/ascii/default.txt
 termux-reload-settings
 rm -f ~/.bashrc
 chsh -s zsh
