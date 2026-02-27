@@ -27,7 +27,7 @@ SELECTED=$(find "$ART_DIR" -maxdepth 1 -type f -name "*.txt" | fzf \
 if [ -n "$SELECTED" ]; then
     cp "$SELECTED" "$CURRENT_ART"
     clear
-    echo -e "\033[1;32m[✔] ASCII Art hijacked: $(basename "$SELECTED")\033[0m"
+    echo -e "\033[1;32m[✔] ASCII Art replaced: $(basename "$SELECTED")\033[0m"
     zsh ~/motd.sh
 else
     clear
