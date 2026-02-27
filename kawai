@@ -11,7 +11,7 @@ if [ ! -d "$ART_DIR" ] || [ -z "$(ls -A "$ART_DIR" 2>/dev/null)" ]; then
 fi
 
 if ! command -v fzf &> /dev/null; then
-    [span_2](start_span)echo -e "\033[1;31m[!] Missing fzf module. Run: pkg install fzf\033[0m"[span_2](end_span)
+    echo -e "\033[1;31m[!] Missing fzf module. Run: pkg install fzf\033[0m"
     exit 1
 fi
 
@@ -20,9 +20,9 @@ SELECTED=$(find "$ART_DIR" -maxdepth 1 -type f -name "*.txt" | fzf \
     --prompt="Select ASCII Art > " \
     --height=100% \
     --layout=reverse \
-    --border \
+    --border=none \
     --preview "cat {}" \
-    --preview-window=down:18:wrap:sharp)
+    --preview-window=top:50%:wrap:sharp)
 
 if [ -n "$SELECTED" ]; then
     cp "$SELECTED" "$CURRENT_ART"
