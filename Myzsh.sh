@@ -6,7 +6,7 @@ C_RED='\033[1;31m'
 C_RST='\033[0m'
 
 clear
-echo -e "\n${C_CYN}>>> MYZSH INSTALLER // Grab a coffee while I'm installing.${C_RST}\n"
+echo -e "\n${C_CYN}>>> MYZSH INSTALLER // INITIALIZING.${C_RST}\n"
 
 echo -e "${C_CYN}[+] Updating system...${C_RST}"
 pkg update -y -o Dpkg::Options::="--force-confnew"
@@ -38,7 +38,7 @@ curl -fsSL "$BASE_URL/termux.properties" -o ~/.termux/termux.properties
 curl -fsSL "$BASE_URL/colors.properties" -o ~/.termux/colors.properties
 curl -fsSL "$BASE_URL/config.jsonc" -o ~/.config/fastfetch/config.jsonc
 
-curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-nf" -o $PREFIX/bin/termux-nf
+curl -fsSL "$BASE_URL/termux-nf" -o $PREFIX/bin/termux-nf
 curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-color" -o $PREFIX/bin/termux-color
 curl -fsSL "$BASE_URL/kawai" -o $PREFIX/bin/kawai
 
@@ -52,32 +52,27 @@ if [ -d ~/.temp_sync/ascii ]; then
 fi
 rm -rf ~/.temp_sync
 
-echo -e "\n${C_CYN}[+] Injecting Base Nerd Font...${C_RST}"
-curl -L "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" -o ~/.termux/font.ttf >/dev/null 2>&1
+echo -e "\n${C_CYN}[+] Injecting High-Density Glyphs...${C_RST}"
+bash $PREFIX/bin/termux-nf Meslo >/dev/null 2>&1
 
 if [ -f ~/.termux/font.ttf ]; then
-    fc-cache -fv >/dev/null 2>&1
-    termux-reload-settings
-    echo -e "${C_GRN}[✔] Font System Done bruh.${C_RST}"
+    echo -e "${C_GRN}[✔] Full Icon Set Verified.${C_RST}"
 else
     echo -e "${C_RED}[✘] Font Sync Failed.${C_RST}"
 fi
 
 if [ ! -f ~/.termux/current_art.txt ]; then
-    if [ -f ~/.termux/ascii/default.txt ]; then
-        cp ~/.termux/ascii/default.txt ~/.termux/current_art.txt
-    else
-        echo "Protocol Reinhart Active" > ~/.termux/current_art.txt
-    fi
+    cp ~/.termux/ascii/default.txt ~/.termux/current_art.txt 2>/dev/null
 fi
 
-echo -e "\n${C_CYN}[+] Cleaning cache...${C_RST}"
+echo -e "\n${C_CYN}[+] Cleaning deployment residue...${C_RST}"
+rm -f ~/setup.sh
 rm -rf ~/.fonts
 rm -f ~/JetBrainsMono*
 rm -f ~/README.md
 rm -f ~/.bashrc
 chsh -s zsh
 
-echo -e "\n${C_GRN}>>> SETUP COMPLETE. RESTART TERMUX NOW ಥ⁠‿⁠ಥ.${C_RST}\n"
+echo -e "\n${C_GRN}>>> SETUP COMPLETE. RESTART TERMUX NOW.${C_RST}\n"
 termux-setup-storage
 exit 0
