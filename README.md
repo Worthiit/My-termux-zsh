@@ -29,7 +29,7 @@ curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.s
 | :--- | :--- |
 | `up` | Update & Upgrade System |
 | `ninja` | Open the Tool Arsenal (Install 30+ Tools) |
-| kawai | [NEW] Open the ASCII Art Selector (fzf-powered) |
+| `kawai` | [NEW] Open the ASCII Art Selector (fzf-powered) |
 | `setbg` | Set custom background image from storage , still incomplete |
 | `setname` | Change the username shown in the welcome screen |
 | `setlook` | Change Fonts instantly |
@@ -49,13 +49,13 @@ Type this to open the menu:
 ```bash
 ninja
 ```
-It installs what you pick and spits out a cheat sheet on how to use them immediately.( still incomplete )
+It installs what you pick and show you a cheat sheet on how to use them immediately.( still incomplete )
 
 ### The ASCII System (Kawai)
-I moved away from hardcoded art of motd to a different path ,Now you can hot-swap your MOTD visuals.
+I moved away from hardcoded art of motd to a different path, Now you can hot-swap your MOTD visuals.
  * Art Location: ~/.termux/ascii/
  * Adding Art: Drop any .txt file into that folder.
- * Execution: Type kawai and use arrow keys to preview. Hit Enter to swap the ARCII In MOTD.
+ * Execution: Type `kawai` and use arrow keys to preview. Hit Enter to swap the ARCII In MOTD.
   
 
 ###  Automated System Tricks
