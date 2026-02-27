@@ -33,26 +33,11 @@ else
     ram="N/A"
 fi
 
-ART_LINES=(
-"        __"
-"        / /\\"
-"       / /  \\"
-"      / /    \\__________"
-"     / /      \\        /\\"
-"    /_/        \\      / /"
-" ___\\ \\      ___\\____/_/_"
-"/____\\ \\    /___________/\\"
-"\\     \\ \\   \\           \\ \\"
-" \\     \\ \\   \\____       \\ \\"
-"  \\     \\ \\  /   /\\       \\ \\"
-"   \\   / \\_\\/   / /        \\ \\"
-"    \\ /        / /__________\\/"
-"     /        / /     /"
-"    /        / /     /"
-"   /________/ /\\    /"
-"   \\________\\/\\ \\  /"
-"               \\_\\/"
-)
+if [ -f ~/.termux/current_art.txt ]; then
+    ART_LINES=("${(@f)$(< ~/.termux/current_art.txt)}")
+else
+    ART_LINES=("" "  [!] NO ART FOUND" "  Run 'kawai' to fix.")
+fi
 
 INFO_LINES=(
     ""
@@ -68,7 +53,7 @@ INFO_LINES=(
     "${C_LBL}PACKAGES :: ${C_TXT}$pkgs"
     "${C_LBL}SHELL    :: ${C_TXT}zsh $shell_v"
     "${C_LBL}NETWORK  :: ${C_GRY}[ ENCRYPTED ]"
-    "${C_GRY}            (Type 'reveal')"
+    "${C_GRY}             (Type 'reveal')"
     ""
     ""
     ""
@@ -77,8 +62,10 @@ INFO_LINES=(
 
 printf "\n"
 MAX=${#ART_LINES[@]}
+[[ ${#INFO_LINES[@]} -gt $MAX ]] && MAX=${#INFO_LINES[@]}
+
 for ((i=1; i<=MAX; i++)); do
-    printf "  ${C_ART}%-30s${C_RST} %b\n" "${ART_LINES[$i]}" "${INFO_LINES[$i]}"
+    printf "  ${C_ART}%-30s${C_RST} %b\n" "${ART_LINES[$i]:-}" "${INFO_LINES[$i]:-}"
 done
 
 quotes=(
@@ -113,7 +100,7 @@ tips=(
     "Use 'extract archive.zip' to unpack anything."
     "Type '!!' to run the last command again."
     "Type 'cd -' to toggle previous directory."
-    "Use 'c' or 'cls' to clear screen."
+    "Type 'kawai' to switch your ASCII art."
     "Type 'setstyle' to change colors."
 )
 
