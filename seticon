@@ -1,0 +1,58 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+ICON_FILE="$HOME/.termux/icons/list.txt"
+P10K_CONFIG="$HOME/.p10k.zsh"
+DEFAULT_ICON="❯"
+
+mkdir -p "$(dirname "$ICON_FILE")"
+touch "$ICON_FILE"
+
+apply_icon() {
+    local icon="$1"
+    sed -i "s|typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX_SYMBOL=.*|typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX_SYMBOL='$icon'|" "$P10K_CONFIG"
+    sed -i "s|typeset -g POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX_SYMBOL=.*|typeset -g POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX_SYMBOL='$icon'|" "$P10K_CONFIG"
+    echo -e "\033[1;32mDone. Prompt is now: $icon\033[0m"
+    echo -e "\033[1;33mRestart Termux or type 'source ~/.zshrc' to see it.\033[0m"
+}
+
+if [[ "$1" == "--default" ]] || [[ "$1" == "-d" ]]; then
+    apply_icon "$DEFAULT_ICON"
+    exit 0
+fi
+
+if [[ "$1" == "--remove" ]] || [[ "$1" == "-rm" ]]; then
+    if [[ ! -s "$ICON_FILE" ]]; then
+        echo "The list is already empty."
+        exit 1
+    fi
+    echo "Pick an icon to delete:"
+    target=$(cat "$ICON_FILE" | fzf --prompt="Remove > " --height=40% --reverse)
+    if [[ -n "$target" ]]; then
+        grep -vFx "$target" "$ICON_FILE" > "${ICON_FILE}.tmp" && mv "${ICON_FILE}.tmp" "$ICON_FILE"
+        echo "Deleted: $target"
+    fi
+    exit 0
+fi
+
+if [[ -n "$1" ]]; then
+    if grep -Fxq "$1" "$ICON_FILE"; then
+        echo "That icon is already in your list."
+    else
+        echo "$1" >> "$ICON_FILE"
+        echo "Added '$1' to your collection."
+    fi
+    apply_icon "$1"
+    exit 0
+fi
+
+if [[ ! -s "$ICON_FILE" ]]; then
+    echo "Your collection is empty. Add one with: seticon <icon>"
+    exit 1
+fi
+
+echo "Pick a vibe for your prompt:"
+choice=$(cat "$ICON_FILE" | fzf --prompt="Select Icon > " --height=40% --reverse --border)
+
+if [[ -n "$choice" ]]; then
+    apply_icon "$choice"
+fi
