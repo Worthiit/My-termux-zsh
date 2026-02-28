@@ -6,18 +6,29 @@ apply_frame() {
     sed -i "s|typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=.*|typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX='%240F$1'|" "$P10K_CONFIG"
     sed -i "s|typeset -g POWERLEVEL9K_MULTILINE_NEWLINE_PROMPT_PREFIX=.*|typeset -g POWERLEVEL9K_MULTILINE_NEWLINE_PROMPT_PREFIX='%240F$2'|" "$P10K_CONFIG"
     sed -i "s|typeset -g POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX=.*|typeset -g POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX='%240F$3'|" "$P10K_CONFIG"
-    
-    rm -rf "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"* 2>/dev/null
-    
+    rm -rf "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-"*".zsh"* 2>/dev/null
     echo -e "\033[1;32mFrame swapped.\033[0m"
     echo -e "\033[1;33mRestart Termux to apply.\033[0m"
 }
 
-choice=$(echo -e "Rounded\nMinimal\nHeavy\nDots" | fzf --prompt="Select Frame > " --height=40% --reverse --border)
+if [[ "$1" == "--default" ]] || [[ "$1" == "-d" ]]; then
+    apply_frame "╭─" "├─" "╰─"
+    exit 0
+fi
+
+choice=$(echo -e "Rounded (Default)\nMinimal\nHeavy\nDots\nCustom" | fzf --prompt="Select Frame > " --height=40% --reverse --border)
 
 case "$choice" in
-    "Rounded") apply_frame "╭─" "├─" "╰─" ;;
+    "Rounded (Default)") apply_frame "╭─" "├─" "╰─" ;;
     "Minimal") apply_frame "┌─" "├─" "└─" ;;
     "Heavy") apply_frame "┏━" "┣━" "┗━" ;;
     "Dots") apply_frame "┊ " "┊ " "╰─" ;;
+    "Custom")
+        echo -e "\033[1;36mLet's build a custom frame. Don't fuck it up.\033[0m"
+        read -p "Top part (e.g. ╭─): " top_f
+        read -p "Middle part (e.g. ├─): " mid_f
+        read -p "Bottom part (e.g. ╰─): " bot_f
+        apply_frame "${top_f:-╭─}" "${mid_f:-├─}" "${bot_f:-╰─}"
+        ;;
+    *) exit 0 ;;
 esac
