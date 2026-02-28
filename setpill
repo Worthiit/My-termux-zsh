@@ -1,0 +1,39 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+P10K_CONFIG="$HOME/.p10k.zsh"
+
+apply_pills() {
+    sed -i "s|typeset -g POWERLEVEL9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL=.*|typeset -g POWERLEVEL9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL='$1'|" "$P10K_CONFIG"
+    sed -i "s|typeset -g POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL=.*|typeset -g POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL='$2'|" "$P10K_CONFIG"
+    sed -i "s|typeset -g POWERLEVEL9K_RIGHT_PROMPT_FIRST_SEGMENT_START_SYMBOL=.*|typeset -g POWERLEVEL9K_RIGHT_PROMPT_FIRST_SEGMENT_START_SYMBOL='$3'|" "$P10K_CONFIG"
+    sed -i "s|typeset -g POWERLEVEL9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL=.*|typeset -g POWERLEVEL9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL='$4'|" "$P10K_CONFIG"
+
+    rm -rf "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-"*".zsh"* 2>/dev/null
+    
+    echo -e "\033[1;32mPills updated.\033[0m"
+    echo -e "\033[1;33mRestart Termux to apply.\033[0m"
+}
+
+if [[ "$1" == "--default" ]] || [[ "$1" == "-d" ]]; then
+    apply_pills "\uE0B6" "\uE0B4" "\uE0B6" "\uE0B4"
+    exit 0
+fi
+
+choice=$(echo -e "Rounded (Default)\nSharp\nSlanted\nFlames\nPixels\nCustom" | fzf --prompt="Select Pill Style > " --height=50% --reverse --border)
+
+case "$choice" in
+    "Rounded (Default)") apply_pills "\uE0B6" "\uE0B4" "\uE0B6" "\uE0B4" ;;
+    "Sharp") apply_pills "" "" "" "" ;;
+    "Slanted") apply_pills "" "" "" "" ;;
+    "Flames") apply_pills "" "" "" "" ;;
+    "Pixels") apply_pills "" "" "" "" ;;
+    "Custom")
+        echo -e "\033[1;36mLet's build custom pills.\033[0m"
+        read -p "Left Start (e.g. ): " l_start
+        read -p "Left End (e.g. ): " l_end
+        read -p "Right Start (e.g. ): " r_start
+        read -p "Right End (e.g. ): " r_end
+        apply_pills "${l_start:-\uE0B6}" "${l_end:-\uE0B4}" "${r_start:-\uE0B6}" "${r_end:-\uE0B4}"
+        ;;
+    *) exit 0 ;;
+esac
