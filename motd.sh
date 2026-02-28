@@ -1,11 +1,11 @@
 #!/data/data/com.termux/files/usr/bin/zsh
 export PATH=$PATH:/system/bin:/system/xbin
 
-C_ART='\033[1;36m'
-C_LBL='\033[1;35m'
-C_TXT='\033[1;37m'
-C_GRY='\033[1;30m'
-C_CMD='\033[0;32m'
+C_ART='\033[38;5;103m'
+C_LBL='\033[38;5;60m'
+C_TXT='\033[38;5;250m'
+C_GRY='\033[38;5;240m'
+C_CMD='\033[38;5;245m'
 C_RST='\033[0m'
 
 clear
@@ -36,12 +36,10 @@ fi
 if [ -f ~/.termux/current_art.txt ]; then
     ART_LINES=("${(@f)$(< ~/.termux/current_art.txt)}")
 else
-    ART_LINES=("" "  [!] NO ART FOUND" "  Run 'kawai' to fix.")
+    ART_LINES=("" "  [!] NO ART" "  Run 'kawai'")
 fi
 
 INFO_LINES=(
-    ""
-    ""
     "${C_LBL}USER     :: ${C_TXT}$user"
     "${C_LBL}MODEL    :: ${C_TXT}$model"
     "${C_LBL}SYSTEM   :: ${C_TXT}Android $(getprop ro.build.version.release)"
@@ -53,16 +51,16 @@ INFO_LINES=(
     "${C_LBL}PACKAGES :: ${C_TXT}$pkgs"
     "${C_LBL}SHELL    :: ${C_TXT}zsh $shell_v"
     "${C_LBL}NETWORK  :: ${C_GRY}[ ENCRYPTED ]"
-    "${C_GRY}             (Type 'reveal')"
-    ""
 )
 
 printf "\n"
-MAX=${#ART_LINES[@]}
-[[ ${#INFO_LINES[@]} -gt $MAX ]] && MAX=${#INFO_LINES[@]}
+MAX_LINES=${#ART_LINES[@]}
+[[ ${#INFO_LINES[@]} -gt $MAX_LINES ]] && MAX_LINES=${#INFO_LINES[@]}
 
-for ((i=1; i<=MAX; i++)); do
-    printf "  ${C_ART}%-30s${C_RST} %b\n" "${ART_LINES[$i]:-}" "${INFO_LINES[$i]:-}"
+for ((i=1; i<=MAX_LINES; i++)); do
+    ART_STR="${ART_LINES[$i]:-}"
+    INFO_STR="${INFO_LINES[$i]:-}"
+    printf "  ${C_ART}%-32s${C_RST} %b\n" "$ART_STR" "$INFO_STR"
 done
 
 quotes=(
@@ -104,5 +102,5 @@ tips=(
 rand_q=$(( RANDOM % ${#quotes[@]} + 1 ))
 rand_t=$(( RANDOM % ${#tips[@]} + 1 ))
 
-printf "\n  ${C_GRY}>> ${C_TXT}\033[1m${quotes[$rand_q]}${C_RST}\n"
-printf "  ${C_GRY}>> ${C_CMD}TIP: ${C_TXT}${tips[$rand_t]}${C_RST}\n\n"
+printf "\n  ${C_GRY}>> ${C_TXT}\033[1m${quotes[$rand_q]}${C_RST}"
+printf "\n  ${C_GRY}>> ${C_CMD}TIP: ${C_TXT}${tips[$rand_t]}${C_RST}\n\n"
