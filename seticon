@@ -9,18 +9,11 @@ touch "$ICON_FILE"
 
 apply_icon() {
     local icon="$1"
-    
-    # Targeting the specific Prompt Char variables from your p10k.zsh file
     sed -i "s|typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION=.*|typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='$icon'|" "$P10K_CONFIG"
-    
-    # Also updating the command mode icon so it matches the vibe
     sed -i "s|typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VICMD_CONTENT_EXPANSION=.*|typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VICMD_CONTENT_EXPANSION='❮'|" "$P10K_CONFIG"
-
-    # Clearing the cache so it reloads immediately
-    rm -rf "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"* 2>/dev/null
-    
+    rm -rf "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-"*".zsh"* 2>/dev/null
     echo -e "\033[1;32mDone. Prompt vibe is now: $icon\033[0m"
-    echo -e "\033[1;33mJust type 'source ~/.zshrc' or restart Termux.\033[0m"
+    echo -e "\033[1;33mType 'source ~/.zshrc' or restart Termux.\033[0m"
 }
 
 if [[ "$1" == "--default" ]] || [[ "$1" == "-d" ]]; then
@@ -34,12 +27,12 @@ if [[ "$1" == "--remove" ]] || [[ "$1" == "-rm" ]]; then
         exit 1
     fi
     target=$(cat "$ICON_FILE" | fzf --prompt="Remove > " --height=40% --reverse)
-    [[ -n "$target" ]] && grep -vFx "$target" "$ICON_FILE" > "${ICON_FILE}.tmp" && mv "${ICON_FILE}.tmp" "$ICON_FILE"
+    [[ -n "$target" ]] && grep -vFx -- "$target" "$ICON_FILE" > "${ICON_FILE}.tmp" && mv "${ICON_FILE}.tmp" "$ICON_FILE"
     exit 0
 fi
 
 if [[ -n "$1" ]]; then
-    [[ ! $(grep -Fx "$1" "$ICON_FILE") ]] && echo "$1" >> "$ICON_FILE"
+    [[ ! $(grep -Fx -- "$1" "$ICON_FILE") ]] && echo "$1" >> "$ICON_FILE"
     apply_icon "$1"
     exit 0
 fi
