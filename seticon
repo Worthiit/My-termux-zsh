@@ -9,15 +9,18 @@ touch "$ICON_FILE"
 
 apply_icon() {
     local icon="$1"
-    # Update the config file
-    sed -i "s|typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX_SYMBOL=.*|typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX_SYMBOL='$icon'|" "$P10K_CONFIG"
-    sed -i "s|typeset -g POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX_SYMBOL=.*|typeset -g POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX_SYMBOL='$icon'|" "$P10K_CONFIG"
     
-    # Nuke the P10k instant prompt cache so changes actually show up
+    # Targeting the specific Prompt Char variables from your p10k.zsh file
+    sed -i "s|typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION=.*|typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='$icon'|" "$P10K_CONFIG"
+    
+    # Also updating the command mode icon so it matches the vibe
+    sed -i "s|typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VICMD_CONTENT_EXPANSION=.*|typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VICMD_CONTENT_EXPANSION='❮'|" "$P10K_CONFIG"
+
+    # Clearing the cache so it reloads immediately
     rm -rf "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"* 2>/dev/null
     
-    echo -e "\033[1;32mDone. Prompt is now: $icon\033[0m"
-    echo -e "\033[1;33mRestart Termux now to see the new vibe.\033[0m"
+    echo -e "\033[1;32mDone. Prompt vibe is now: $icon\033[0m"
+    echo -e "\033[1;33mJust type 'source ~/.zshrc' or restart Termux.\033[0m"
 }
 
 if [[ "$1" == "--default" ]] || [[ "$1" == "-d" ]]; then
@@ -27,37 +30,19 @@ fi
 
 if [[ "$1" == "--remove" ]] || [[ "$1" == "-rm" ]]; then
     if [[ ! -s "$ICON_FILE" ]]; then
-        echo "The list is already empty."
+        echo "List is empty."
         exit 1
     fi
-    echo "Pick an icon to delete:"
     target=$(cat "$ICON_FILE" | fzf --prompt="Remove > " --height=40% --reverse)
-    if [[ -n "$target" ]]; then
-        grep -vFx "$target" "$ICON_FILE" > "${ICON_FILE}.tmp" && mv "${ICON_FILE}.tmp" "$ICON_FILE"
-        echo "Deleted: $target"
-    fi
+    [[ -n "$target" ]] && grep -vFx "$target" "$ICON_FILE" > "${ICON_FILE}.tmp" && mv "${ICON_FILE}.tmp" "$ICON_FILE"
     exit 0
 fi
 
 if [[ -n "$1" ]]; then
-    if grep -Fxq "$1" "$ICON_FILE"; then
-        echo "That icon is already in your list."
-    else
-        echo "$1" >> "$ICON_FILE"
-        echo "Added '$1' to your collection."
-    fi
+    [[ ! $(grep -Fx "$1" "$ICON_FILE") ]] && echo "$1" >> "$ICON_FILE"
     apply_icon "$1"
     exit 0
 fi
 
-if [[ ! -s "$ICON_FILE" ]]; then
-    echo "Your collection is empty. Add one with: seticon <icon>"
-    exit 1
-fi
-
-echo "Pick a vibe for your prompt:"
 choice=$(cat "$ICON_FILE" | fzf --prompt="Select Icon > " --height=40% --reverse --border)
-
-if [[ -n "$choice" ]]; then
-    apply_icon "$choice"
-fi
+[[ -n "$choice" ]] && apply_icon "$choice"
