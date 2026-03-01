@@ -1,0 +1,24 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+if [[ "$1" == "in" ]]; then
+    item=$(find /sdcard/Download /sdcard/Documents -maxdepth 3 -type f 2>/dev/null | fzf --prompt="Pull to Termux > " --height=50% --reverse --border)
+    if [[ -n "$item" ]]; then
+        cp "$item" .
+        echo -e "\033[1;32mDone. File is here.\033[0m"
+    fi
+    exit 0
+fi
+
+if [[ "$1" == "out" ]]; then
+    item=$(find . -maxdepth 2 -type f 2>/dev/null | fzf --prompt="Push to Android > " --height=50% --reverse --border)
+    if [[ -n "$item" ]]; then
+        cp "$item" /sdcard/Download/
+        echo -e "\033[1;32mDone. File sent to Downloads.\033[0m"
+    fi
+    exit 0
+fi
+
+echo -e "\033[1;36mWarp File Transfer\033[0m"
+echo "Usage:"
+echo "  warp in  - Select a file from Android and copy it here"
+echo "  warp out - Select a file from Termux and send it to Downloads"
