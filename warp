@@ -1,24 +1,46 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+if ! command -v ranger &> /dev/null; then
+    echo -e "\033[1;36m[+] Setting up Visual File Manager (Ranger) it takes 1-3 mins for the first time...\033[0m"
+    pkg install -y ranger >/dev/null 2>&1
+fi
+
+CHOICE_FILE="$HOME/.cache/warp_choice.txt"
+mkdir -p "$HOME/.cache"
+
 if [[ "$1" == "in" ]]; then
-    item=$(find /sdcard/Download /sdcard/Documents -maxdepth 3 -type f 2>/dev/null | fzf --prompt="Pull to Termux > " --height=50% --reverse --border)
-    if [[ -n "$item" ]]; then
-        cp "$item" .
-        echo -e "\033[1;32mDone. File is here.\033[0m"
+    rm -f "$CHOICE_FILE"
+    ranger --choosefile="$CHOICE_FILE" /sdcard/
+    
+    if [[ -s "$CHOICE_FILE" ]]; then
+        FILE=$(cat "$CHOICE_FILE")
+        cp "$FILE" .
+        clear
+        echo -e "\033[1;32m[✔] Pulled: $(basename "$FILE")\033[0m"
+    else
+        clear
+        echo -e "\033[1;31m[!] Warp aborted.\033[0m"
     fi
     exit 0
 fi
 
 if [[ "$1" == "out" ]]; then
-    item=$(find . -maxdepth 2 -type f 2>/dev/null | fzf --prompt="Push to Android > " --height=50% --reverse --border)
-    if [[ -n "$item" ]]; then
-        cp "$item" /sdcard/Download/
-        echo -e "\033[1;32mDone. File sent to Downloads.\033[0m"
+    rm -f "$CHOICE_FILE"
+    ranger --choosefile="$CHOICE_FILE" .
+    
+    if [[ -s "$CHOICE_FILE" ]]; then
+        FILE=$(cat "$CHOICE_FILE")
+        cp "$FILE" /sdcard/Download/
+        clear
+        echo -e "\033[1;32m[✔] Pushed to Downloads: $(basename "$FILE")\033[0m"
+    else
+        clear
+        echo -e "\033[1;31m[!] Warp aborted.\033[0m"
     fi
     exit 0
 fi
 
-echo -e "\033[1;36mWarp File Transfer\033[0m"
+echo -e "\033[1;36m>>> WARP FILE BRIDGE <<<\033[0m"
 echo "Usage:"
-echo "  warp in  - Select a file from Android and copy it here"
-echo "  warp out - Select a file from Termux and send it to Downloads"
+echo "  warp in  - Opens visual browser in Android storage. Find file, press Enter to pull."
+echo "  warp out - Opens visual browser here. Find file, press Enter to push to Downloads."
