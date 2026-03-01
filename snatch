@@ -1,0 +1,29 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+if ! command -v fzf &> /dev/null; then
+    pkg install -y fzf >/dev/null 2>&1
+fi
+
+clear
+echo -e "\033[1;36m>>> SCANNING DEVICE APPS...\033[0m"
+
+PKG=$(pm list packages | sed 's/package://' | sort | fzf --prompt="Select App to Extract > " --height=50% --reverse --border)
+
+if [[ -z "$PKG" ]]; then
+    clear
+    echo -e "\033[1;31m[!] Aborted.\033[0m"
+    exit 0
+fi
+
+APK_PATH=$(pm path "$PKG" | head -n 1 | sed 's/package://')
+
+if [[ -z "$APK_PATH" ]]; then
+    clear
+    echo -e "\033[1;31m[!] Could not locate APK path for $PKG.\033[0m"
+    exit 1
+fi
+
+cp "$APK_PATH" "./${PKG}.apk"
+
+clear
+echo -e "\033[1;32m[✔] Grabbed: ${PKG}.apk\033[0m"
