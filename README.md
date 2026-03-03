@@ -66,8 +66,8 @@ I moved away from hardcoded art of motd to a different path, Now you can hot-swa
 *Type beam to start a local web server. It provides a URL that you can open on any device on the same network to get a full-screen, premium web terminal with custom keys and zoom support.*
 
  # Warp
- * warp in: Open a visual file manager in /sdcard/ to pull files into your current folder.
- * warp out: Open a visual file manager here to push files directly to your Android Downloads.
+ * `warp in`: Open a visual file manager in /sdcard/ to pull files into your current folder.
+ * `warp out`: Open a visual file manager here to push files directly to your Android Downloads.
 
 # Peek
 *Instead of opening a file to check a token or a line of code, run peek. It opens an fzf search with a side-window preview that highlights code syntax using bat. you can do the same thing with cat too*
