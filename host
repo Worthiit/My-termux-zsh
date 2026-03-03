@@ -1,0 +1,20 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+PORT=${1:-8080}
+IP=$(ifconfig 2>/dev/null | awk '/inet / && !/127.0.0.1/ {print $2}' | head -n 1)
+
+echo -e "\033[1;36m>>> Project Dashboard: http://$IP:$PORT <<<\033[0m"
+
+if [[ -f "package.json" ]]; then
+    echo -e "\033[1;32m[+] Node.js detected. Launching npm...\033[0m"
+    npm start -- --port $PORT
+elif [[ -f "index.html" || -f "main.html" ]]; then
+    echo -e "\033[1;32m[+] HTML Project detected. Serving via Python...\033[0m"
+    python -m http.server $PORT
+elif [[ -f "requirements.txt" || -f "main.py" ]]; then
+    echo -e "\033[1;32m[+] Python Backend detected. Running main.py...\033[0m"
+    python main.py
+else
+    echo -e "\033[1;33m[!] No specific project type found. Serving current directory...\033[0m"
+    python -m http.server $PORT
+fi
