@@ -16,15 +16,19 @@ if [[ "$1" == "-a" || "$1" == "--add" ]]; then
     exit 0
 fi
 
+if [[ "$1" == "-rm" || "$1" == "--remove" ]]; then
+    TARGET=$(ls "$ART_DIR" | fzf --prompt="Nuke which art? > " --height=40% --reverse --border)
+    if [[ -n "$TARGET" ]]; then
+        rm "$ART_DIR/$TARGET"
+        echo -e "\033[1;31m[!] $TARGET deleted from arsenal.\033[0m"
+    fi
+    exit 0
+fi
+
 if [ ! -d "$ART_DIR" ] || [ -z "$(ls -A "$ART_DIR" 2>/dev/null)" ]; then
     clear
     echo -e "\033[1;31m[!] Arsenal is empty.\033[0m"
     echo -e "\033[1;33m[i] Ensure your files are in $ART_DIR\033[0m"
-    exit 1
-fi
-
-if ! command -v fzf &> /dev/null; then
-    echo -e "\033[1;31m[!] Missing fzf module. Run: pkg install fzf\033[0m"
     exit 1
 fi
 
