@@ -6,7 +6,7 @@ C_RED='\033[1;31m'
 C_RST='\033[0m'
 
 clear
-echo -e "\n${C_CYN}>>> OK, IT'LL TAKE A WHILE SO GRAB A COFFEE WHILE IT'S INSTALLING...${C_RST}\n"
+echo -e "\n${C_CYN}>>> OK, LET'S GET THIS SET UP.${C_RST}\n"
 
 echo -e "${C_CYN}[+] Refreshing the system...${C_RST}"
 pkg update -y -o Dpkg::Options::="--force-confnew"
@@ -47,9 +47,10 @@ curl -fsSL "$BASE_URL/beam" -o $PREFIX/bin/beam
 curl -fsSL "$BASE_URL/warp" -o $PREFIX/bin/warp
 curl -fsSL "$BASE_URL/peek" -o $PREFIX/bin/peek
 curl -fsSL "$BASE_URL/scrub" -o $PREFIX/bin/scrub
+curl -fsSL "$BASE_URL/host" -o $PREFIX/bin/host
 curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-color" -o $PREFIX/bin/termux-color
 
-chmod +x ~/motd.sh ~/ninja.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color $PREFIX/bin/kawai $PREFIX/bin/seticon $PREFIX/bin/setframe $PREFIX/bin/setpill $PREFIX/bin/beam $PREFIX/bin/warp $PREFIX/bin/peek $PREFIX/bin/scrub
+chmod +x ~/motd.sh ~/ninja.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color $PREFIX/bin/kawai $PREFIX/bin/seticon $PREFIX/bin/setframe $PREFIX/bin/setpill $PREFIX/bin/beam $PREFIX/bin/warp $PREFIX/bin/peek $PREFIX/bin/scrub $PREFIX/bin/host
 
 echo -e "\n${C_CYN}[+] Syncing your ASCII art...${C_RST}"
 rm -rf ~/.temp_sync
@@ -75,12 +76,13 @@ if [ ! -f ~/.termux/current_art.txt ]; then
 fi
 
 echo -e "\n${C_CYN}[+] Cleaning up...${C_RST}"
+rm -f ~/setup.sh
 rm -rf ~/.fonts
 rm -f ~/JetBrainsMono*
 rm -f ~/README.md
 rm -f ~/.bashrc
 chsh -s zsh
 
-echo -e "\n${C_GRN}>>> ALL DONE. RESTART TERMUX TO INSTALL ZSH AND SEE CHANGES.${C_RST}\n"
+echo -e "\n${C_GRN}>>> ALL DONE. RESTART TERMUX TO SEE THE CHANGES.${C_RST}\n"
 termux-setup-storage
 exit 0
