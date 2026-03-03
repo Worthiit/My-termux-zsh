@@ -3,15 +3,22 @@
 ART_DIR="$HOME/.termux/ascii"
 CURRENT_ART="$HOME/.termux/current_art.txt"
 
+mkdir -p "$ART_DIR"
+
+if [[ "$1" == "-a" || "$1" == "--add" ]]; then
+    if [[ -z "$2" ]]; then
+        echo -e "\033[1;31m[!] Name your art. Usage: kawai -a <name>\033[0m"
+        exit 1
+    fi
+    echo -e "\033[1;36m[+] Paste your ASCII art below, then press Ctrl+D to save:\033[0m"
+    cat > "$ART_DIR/$2.txt"
+    echo -e "\033[1;32m[✔] Added $2 to the arsenal.\033[0m"
+    exit 0
+fi
+
 if [ ! -d "$ART_DIR" ] || [ -z "$(ls -A "$ART_DIR" 2>/dev/null)" ]; then
     clear
     echo -e "\033[1;31m[!] Arsenal is empty.\033[0m"
-    echo -e "\033[1;33m[i] Ensure your files are in $ART_DIR\033[0m"
-    exit 1
-fi
-
-if ! command -v fzf &> /dev/null; then
-    echo -e "\033[1;31m[!] Missing fzf module. Run: pkg install fzf\033[0m"
     exit 1
 fi
 
