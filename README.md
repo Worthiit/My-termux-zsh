@@ -28,10 +28,10 @@ curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.s
 | Command | Action |
 | :--- | :--- |
 | `up` | Update & Upgrade System |
+| `setname <NAME>` | Change the username shown in the welcome screen |
 | `ninja` | Open the Tool Arsenal (Install 30+ Tools) |
 | `kawai` | [NEW] Open the ASCII Art Selector (fzf-powered) |
 | `setbg` | Set custom background image from storage , still incomplete |
-| `setname <NAME>` | Change the username shown in the welcome screen |
 | `setlook` | Change Fonts instantly |
 | `setstyle`| Change Color Scheme |
 | `setprompt`| Configure the Zsh prompt style |
@@ -41,6 +41,11 @@ curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.s
 | `g` / `gp` / `gl` | Git, Git Push, Git Pull |
 | `texpo <file> or <folder>` | Backup Tmux to Downloads |
 | `..` | Go back one folder |
+| beam | [NEW] Remote Web Dashboard with "Zoom" & "Floating Keys" |
+| warp | [NEW] Visual File Bridge between Termux and Android Storage |
+| peek | [NEW] Fast fzf + bat previewer for any file in your project |
+| scrub | [NEW] removes cache, temp files, and installer trash |
+
 
 ### 🛠 The Arsenal (Tool Manager , still incomplete)
 I built a CLI interface to let you instantly bulk-install 30+ God-Tier Termux tools (like `apktool`, `lazygit`, `tmate`, `nmap`, etc.) without typing `pkg install` over and over.
@@ -56,7 +61,17 @@ I moved away from hardcoded art of motd to a different path, Now you can hot-swa
  * Art Location: ~/.termux/ascii/
  * Adding Art: Drop any .txt file into that folder.
  * Execution: Type `kawai` and use arrow keys to preview. Hit Enter to swap the ARCII In MOTD.
-  
+
+# beam command ( still incomplete and hald ass cuz ahh i thought of using an ai for it )
+*Type beam to start a local web server. It provides a URL that you can open on any device on the same network to get a full-screen, premium web terminal with custom keys and zoom support.*
+
+ # Warp
+ * warp in: Open a visual file manager in /sdcard/ to pull files into your current folder.
+ * warp out: Open a visual file manager here to push files directly to your Android Downloads.
+
+# Peek
+*Instead of opening a file to check a token or a line of code, run peek. It opens an fzf search with a side-window preview that highlights code syntax using bat. you can do the same thing with cat too*
+ 
 
 ###  Automated System Tricks
 I automated the annoying manual stuff in `.zshrc`.
