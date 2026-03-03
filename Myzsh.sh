@@ -16,7 +16,7 @@ echo -e "\n${C_CYN}[+] Grabbing the essentials...${C_RST}"
 pkg install -y -o Dpkg::Options::="--force-confnew" \
     zsh git gh curl wget termux-api ncurses-utils make \
     clang tar bat grep eza fzf openssl python jq fontconfig fontconfig-utils \
-    zoxide fd ripgrep neovim dialog fastfetch unzip unrar
+    zoxide fd ripgrep neovim dialog fastfetch unzip unrar ttyd iproute2
 
 mkdir -p ~/.termux/ascii ~/.config/fastfetch ~/.termux/icons
 touch ~/.hushlogin
@@ -41,10 +41,15 @@ curl -fsSL "$BASE_URL/config.jsonc" -o ~/.config/fastfetch/config.jsonc
 curl -fsSL "$BASE_URL/termux-nf" -o $PREFIX/bin/termux-nf
 curl -fsSL "$BASE_URL/seticon" -o $PREFIX/bin/seticon
 curl -fsSL "$BASE_URL/setframe" -o $PREFIX/bin/setframe
+curl -fsSL "$BASE_URL/setpill" -o $PREFIX/bin/setpill
 curl -fsSL "$BASE_URL/kawai" -o $PREFIX/bin/kawai
+curl -fsSL "$BASE_URL/beam" -o $PREFIX/bin/beam
+curl -fsSL "$BASE_URL/warp" -o $PREFIX/bin/warp
+curl -fsSL "$BASE_URL/peek" -o $PREFIX/bin/peek
+curl -fsSL "$BASE_URL/scrub" -o $PREFIX/bin/scrub
 curl -fsSL "https://raw.githubusercontent.com/sabamdarif/termux-desktop/main/other/termux-color" -o $PREFIX/bin/termux-color
 
-chmod +x ~/motd.sh ~/ninja.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color $PREFIX/bin/kawai $PREFIX/bin/seticon $PREFIX/bin/setframe
+chmod +x ~/motd.sh ~/ninja.sh $PREFIX/bin/termux-nf $PREFIX/bin/termux-color $PREFIX/bin/kawai $PREFIX/bin/seticon $PREFIX/bin/setframe $PREFIX/bin/setpill $PREFIX/bin/beam $PREFIX/bin/warp $PREFIX/bin/peek $PREFIX/bin/scrub
 
 echo -e "\n${C_CYN}[+] Syncing your ASCII art...${C_RST}"
 rm -rf ~/.temp_sync
