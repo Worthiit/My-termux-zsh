@@ -1,0 +1,9 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+if ! command -v fzf &> /dev/null || ! command -v bat &> /dev/null; then
+    echo -e "\033[1;31m[!] Missing dependencies. Run: pkg install fzf bat\033[0m"
+    exit 1
+fi
+
+file=$(find . -maxdepth 3 -type f -not -path "*/\.git/*" -not -path "*/node_modules/*" 2>/dev/null | fzf --prompt="Peek File > " --preview "bat --color=always --style=numbers {}" --preview-window=right:60%)
+[[ -n "$file" ]] && bat --color=always --style=numbers "$file"
