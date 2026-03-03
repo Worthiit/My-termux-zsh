@@ -7,12 +7,12 @@ mkdir -p "$ART_DIR"
 
 if [[ "$1" == "-a" || "$1" == "--add" ]]; then
     if [[ -z "$2" ]]; then
-        echo -e "\033[1;31m[!] Name your art. Usage: kawai -a <name>\033[0m"
+        echo -e "\033[1;31m[!] Name the art. Usage: kawai -a <name>\033[0m"
         exit 1
     fi
-    echo -e "\033[1;36m[+] Paste your ASCII art below, then press Ctrl+D to save:\033[0m"
+    echo -e "\033[1;36m[+] Paste your ASCII below, then hit Ctrl+D:\033[0m"
     cat > "$ART_DIR/$2.txt"
-    echo -e "\033[1;32m[✔] Added $2 to the arsenal.\033[0m"
+    echo -e "\033[1;32m[✔] Added $2.\033[0m"
     exit 0
 fi
 
@@ -24,7 +24,7 @@ fi
 
 clear
 SELECTED=$(find "$ART_DIR" -maxdepth 1 -type f -name "*.txt" | fzf \
-    --prompt="Select ASCII Art > " \
+    --prompt="Select Art > " \
     --height=100% \
     --layout=reverse \
     --border=none \
@@ -34,9 +34,9 @@ SELECTED=$(find "$ART_DIR" -maxdepth 1 -type f -name "*.txt" | fzf \
 if [ -n "$SELECTED" ]; then
     cp "$SELECTED" "$CURRENT_ART"
     clear
-    echo -e "\033[1;32m[✔] ASCII Art hijacked: $(basename "$SELECTED")\033[0m"
+    echo -e "\033[1;32m[✔] Swapped to: $(basename "$SELECTED" .txt)\033[0m"
     zsh ~/motd.sh
 else
     clear
-    echo -e "\033[1;31m[!] Selection aborted.\033[0m"
+    echo -e "\033[1;31m[!] Cancelled.\033[0m"
 fi
