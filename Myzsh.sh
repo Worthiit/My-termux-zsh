@@ -6,7 +6,7 @@ C_RED='\033[1;31m'
 C_RST='\033[0m'
 
 clear
-echo -e "\n${C_CYN}>>> OK, LET'S GET THIS SET UP.${C_RST}\n"
+echo -e "\n${C_CYN}>>> OK, IT'LL TAKE A WHILE SO GRAB A COFFEE WHILE IT'S INSTALLING...${C_RST}\n"
 
 echo -e "${C_CYN}[+] Refreshing the system...${C_RST}"
 pkg update -y -o Dpkg::Options::="--force-confnew"
@@ -75,13 +75,12 @@ if [ ! -f ~/.termux/current_art.txt ]; then
 fi
 
 echo -e "\n${C_CYN}[+] Cleaning up...${C_RST}"
-rm -f ~/setup.sh
 rm -rf ~/.fonts
 rm -f ~/JetBrainsMono*
 rm -f ~/README.md
 rm -f ~/.bashrc
 chsh -s zsh
 
-echo -e "\n${C_GRN}>>> ALL DONE. RESTART TERMUX TO SEE THE CHANGES.${C_RST}\n"
+echo -e "\n${C_GRN}>>> ALL DONE. RESTART TERMUX TO INSTALL ZSH AND SEE CHANGES.${C_RST}\n"
 termux-setup-storage
 exit 0
