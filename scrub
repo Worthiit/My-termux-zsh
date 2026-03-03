@@ -1,0 +1,7 @@
+#!/data/data/com.termux/files/usr/bin/bash
+echo -e "\033[1;33m[!] Cleaning the pipes...\033[0m"
+rm -rf ~/.cache/*
+rm -rf ~/.temp_sync
+rm -f ~/setup.sh ~/README.md ~/JetBrainsMono*
+pkg clean
+echo -e "\033[1;32m[✔] Home folder is clean.\033[0m"
