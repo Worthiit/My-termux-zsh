@@ -62,7 +62,7 @@ I moved away from hardcoded art of motd to a different path, Now you can hot-swa
  * Adding Art: Drop any .txt file into that folder.
  * Execution: Type `kawai` and use arrow keys to preview. Hit Enter to swap the ARCII In MOTD.
 
-# beam command ( still incomplete and hald ass cuz ahh i thought of using an ai for it )
+# beam  ( Incomplete cuz i used an ai to improve and it messed my main base)
 *Type beam to start a local web server. It provides a URL that you can open on any device on the same network to get a full-screen, premium web terminal with custom keys and zoom support.*
 
  # Warp
