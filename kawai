@@ -12,19 +12,25 @@ if [[ "$1" == "-a" || "$1" == "--add" ]]; then
     fi
     echo -e "\033[1;36m[+] Paste your ASCII below, then hit Ctrl+D:\033[0m"
     cat > "$ART_DIR/$2.txt"
-    echo -e "\033[1;32m[✔] Added $2.\033[0m"
+    echo -e "\033[1;32m[✔] Added $2 to arsenal.\033[0m"
     exit 0
 fi
 
 if [ ! -d "$ART_DIR" ] || [ -z "$(ls -A "$ART_DIR" 2>/dev/null)" ]; then
     clear
     echo -e "\033[1;31m[!] Arsenal is empty.\033[0m"
+    echo -e "\033[1;33m[i] Ensure your files are in $ART_DIR\033[0m"
+    exit 1
+fi
+
+if ! command -v fzf &> /dev/null; then
+    echo -e "\033[1;31m[!] Missing fzf module. Run: pkg install fzf\033[0m"
     exit 1
 fi
 
 clear
 SELECTED=$(find "$ART_DIR" -maxdepth 1 -type f -name "*.txt" | fzf \
-    --prompt="Select Art > " \
+    --prompt="Select ASCII Art > " \
     --height=100% \
     --layout=reverse \
     --border=none \
@@ -34,9 +40,9 @@ SELECTED=$(find "$ART_DIR" -maxdepth 1 -type f -name "*.txt" | fzf \
 if [ -n "$SELECTED" ]; then
     cp "$SELECTED" "$CURRENT_ART"
     clear
-    echo -e "\033[1;32m[✔] Swapped to: $(basename "$SELECTED" .txt)\033[0m"
+    echo -e "\033[1;32m[✔] ASCII Art swapped: $(basename "$SELECTED")\033[0m"
     zsh ~/motd.sh
 else
     clear
-    echo -e "\033[1;31m[!] Cancelled.\033[0m"
+    echo -e "\033[1;31m[!] Selection aborted.\033[0m"
 fi
