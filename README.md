@@ -41,10 +41,13 @@ curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.s
 | `g` / `gp` / `gl` | Git, Git Push, Git Pull |
 | `texpo <file> or <folder>` | Backup Tmux to Downloads |
 | `..` | Go back one folder |
-| beam | [NEW] Remote Web Dashboard with "Zoom" & "Floating Keys" |
-| warp | [NEW] Visual File Bridge between Termux and Android Storage |
-| peek | [NEW] Fast fzf + bat previewer for any file in your project |
-| scrub | [NEW] removes cache, temp files, and installer trash |
+| `beam` | [NEW] Remote Web Dashboard with "Zoom" & "Floating Keys" |
+| `warp` | [NEW] Visual File Bridge between Termux and Android Storage |
+| `peek` | [NEW] Fast fzf + bat previewer for any file in your project |
+| `scrub` | [NEW] removes cache, temp files, and installer trash |
+
+** For all the available commands head to ...( I'll add a md later , rn I'm lazy )**
+
 
 
 ### 🛠 The Arsenal (Tool Manager , still incomplete)
