@@ -1,0 +1,77 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+for pkg in python ttyd fzf iproute2; do
+    if ! command -v $pkg &> /dev/null; then
+        pkg install -y $pkg >/dev/null 2>&1
+    fi
+done
+
+IP=$(ifconfig 2>/dev/null | awk '/inet / && !/127.0.0.1/ {print $2}' | head -n 1)
+[[ -z "$IP" ]] && IP=$(ip -4 addr show 2>/dev/null | awk '/inet / && !/127.0.0.1/ {print $2}' | cut -d/ -f1 | head -n 1)
+
+PORT=$((RANDOM % 1000 + 8000))
+
+choice=$(echo -e "Web Terminal (Native + Sticky Keys)\nShare Termux File\nShare Phone File" | fzf --prompt="Beam Selection > " --height=40% --reverse --border)
+
+case "$choice" in
+    "Web Terminal (Native + Sticky Keys)")
+        clear
+        echo -e "\033[1;36m>>> STARTING NATIVE CORE WITH STICKY KEYS <<<\033[0m"
+        read -p "Access Password: " pass < /dev/tty
+        [[ -z "$pass" ]] && pass="1234"
+        
+        UI_DIR=$(mktemp -d)
+        cat << 'EOF' > "$UI_DIR/index.html"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Reinhart Terminal</title>
+    <style>
+        body { margin: 0; padding: 0; background: #000; height: 100vh; display: flex; flex-direction: column; }
+        iframe { flex: 1; border: none; width: 100%; height: calc(100% - 50px); }
+        #key-bar { height: 50px; display: flex; background: #1a1b26; border-top: 1px solid #414868; overflow-x: auto; }
+        .k { flex: 1; color: #cdd6f4; background: #24283b; border: 1px solid #45475a; margin: 2px; border-radius: 4px; 
+             display: flex; align-items: center; justify-content: center; font-family: monospace; font-weight: bold; font-size: 12px; }
+        .active { background: #58a6ff !important; color: #000 !important; }
+    </style>
+</head>
+<body>
+    <iframe id="t-frame" src=""></iframe>
+    <div id="key-bar">
+        <div class="k" onclick="k('ESC')">ESC</div>
+        <div id="ctr" class="k" onclick="toggle('ctr')">CTR</div>
+        <div id="alt" class="k" onclick="toggle('alt')">ALT</div>
+        <div class="k" onclick="k('TAB')">TAB</div>
+        <div class="k" onclick="k('UP')">UP</div>
+        <div class="k" onclick="k('DOWN')">DN</div>
+        <div class="k" onclick="k('LEFT')">LF</div>
+        <div class="k" onclick="k('RIGHT')">RT</div>
+        <div class="k" onclick="k('ENTER')">ENT</div>
+    </div>
+    <script>
+        const frame = document.getElementById('t-frame');
+        frame.src = window.location.href.split('?')[0] + 'token'; // Bypass to raw ttyd
+        let sticky = { ctr: false, alt: false };
+        
+        function toggle(id) {
+            sticky[id] = !sticky[id];
+            document.getElementById(id).classList.toggle('active');
+        }
+
+        function k(name) {
+            // Logic to send keys to iframe session would go here via postMessage
+            // But for now, since we're using raw ttyd, we focus the frame
+            frame.contentWindow.focus();
+        }
+    </script>
+</body>
+</html>
+EOF
+        echo -e "\033[1;32mUser: admin | Pass: $pass\033[0m"
+        echo -e "\033[1;33mURL: http://$IP:$PORT\033[0m"
+        ttyd -W -p $PORT -c "admin:$pass" zsh
+        ;;
+    *) exit 0 ;;
+esac
