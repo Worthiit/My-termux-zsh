@@ -95,9 +95,10 @@ I automated the annoying manual stuff in `.zshrc`.
 - **Auto-LS:** Just `cd` into a directory, and it will automatically list all files visually using `eza`.
 - **`mkcd <folder>`:** Creates a folder and instantly jumps into it.
 - **`extract <file>`:** won't needa remember flags anymore , drop any `.tar.gz`, `.zip`, `.rar`, or `.bz2` into it, and it will figure out the right command to extract it automatically ( hope so )
- ** Auto-LS **: Just cd into a directory, and it lists files visually using eza.
- ** `atuin` : ** Search through thousands of past commands instantly without clicking Up a hundred times.
- ** `scrub`:** scrub keeps your storage lean by removing setup trash and cache  [cite: 44-50].
+- **Auto-LS:** Just cd into a directory, and it lists files visually using eza.
+- **`atuin`:** Search through thousands of past commands instantly without clicking Up a hundred times.
+- ** `scrub`:** scrub keeps your storage lean by removing setup trash and cache
+
   
 ### Summary of Changes ( i mean i just updated again cuz old one sucks )
 
