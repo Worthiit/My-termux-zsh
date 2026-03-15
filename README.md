@@ -2,19 +2,22 @@
 
 
 
-I was tired of manually installing Zsh, fonts, themes, and plugins every time I reset Termux. I wanted a "Ducking" setup that installs everything in one command without covering storage with Termux desktop. ( it's for personal use but if you like ,you can also use it )
-
+​I was tired of manually installing Zsh, fonts, themes, and plugins every time I reset Termux. I wanted a professional and easy setup that installs everything in one command without wasting storage on a heavy Termux desktop. This is built for personal use, but if you want a terminal that actually fills the gap between Android hardware and a Linux workstation, this is for you my buddy.
 So I built this.
 
 **It Includes:**
-- **Zsh + Zinit** (The brain/cool-shi)
-- **Powerlevel10k** (The look)
-- **Meslo Nerd Font** (The icons)
-- **Zinit Plugin Manager** (The speed)
-- **Simple Dashboard** (Custom MOTD with live system stats)
+- **Zsh & Zinit**: High-speed shell environment using Zinit for asynchronous plugin loading
+- **Powerlevel10k & Meslo NF**: prompt theme paired with a full Nerd Font for icon support 
 - **Auto-Suggestions & Syntax Highlighting** (The cheat codes)
-- **Font, Color & Prompt Switchers** (For customization)
-- 
+- **Font, Color & Prompt Switchers** (For customization) setlook to change font and setstyle for colours 
+- **Simple Dashboard**: A custom MOTD dashboard with live system stats and a hot-swappable ASCII art system (kawai).
+- **Android core**: Native Android integration (amv) to control system settings, hardware, and activities from the CLI which is originally `am` activity manager but i wanted something better
+- **The Arsenal (ninja):** A CLI manager to bulk-install 30+ tools like apktool, nmap, and yt-dlp. ( haven't added 50+ yet , xaxa )
+- **Atuin & Zoxide**: SQLite-backed infinite command history and smart directory jumping.
+- **Visual Tools**: ftext for string searching with previews and peek for fzf+bat file inspection.
+- **File & App Utilities**: warp for visual storage bridging and snatch for pulling installed APKs
+
+
 ## Installation
 
 One line command cuz why not ?
@@ -23,34 +26,45 @@ One line command cuz why not ?
 curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.sh -o setup.sh && bash setup.sh
 ```
 
-## Features & my Shortcuts
+### Features & my Shortcuts (Old + New)
 
-| Command | Action |
+| Command | What it actually does |
 | :--- | :--- |
-| `up` | Update & Upgrade System |
-| `setname <NAME>` | Change the username shown in the welcome screen |
-| `ninja` | Open the Tool Arsenal (Install 30+ Tools) |
-| `kawai` | [NEW] Open the ASCII Art Selector (fzf-powered) |
-| `setbg` | Set custom background image from storage , still incomplete |
-| `setlook` | Change Fonts instantly |
-| `setstyle`| Change Color Scheme |
-| `setprompt`| Configure the Zsh prompt style |
-| `runclip <file>` | Run Python script directly from Clipboard |
-| `copyclip <file>` | Copy file content to Clipboard |
-| `reveal` | Show hidden IP details |
-| `g` / `gp` / `gl` | Git, Git Push, Git Pull |
-| `texpo <file> or <folder>` | Backup Tmux to Downloads |
-| `..` | Go back one folder |
-| `beam` | [NEW] Remote Web Dashboard with "Zoom" & "Floating Keys" |
-| `warp` | [NEW] Visual File Bridge between Termux and Android Storage |
-| `peek` | [NEW] Fast fzf + bat previewer for any file in your project |
-| `scrub` | [NEW] removes cache, temp files, and installer trash |
+| `up` | Force-refreshes the system. Updates and upgrades in one tap. |
+| `setname <NAME>` | Swaps the username shown on your welcome screen. |
+| `setlook` | Font Switcher. Changes terminal fonts instantly. |
+| `setstyle` | Color Switcher. Picks from 100+ terminal color schemes. |
+| `setprompt` | Re-runs the Powerlevel10k setup to change your prompt look. |
+| `setbg <file>` | Set a custom wallpaper (or `setbg --default` to reset). |
+| `ninja` | The Arsenal. Menu to bulk-install 50+ God-tier tools like `apktool`, `nmap`, etc. |
+| `amv` | **Android Core:** Opens the menu for WiFi, Home, Brightness, and Hardware settings. |
+| `amv a` | **Pro Logic:** Add your own custom Android activity path to the menu on the fly. |
+| `kawai` | ASCII Art Selector. Pick your MOTD look from `~/.termux/ascii/` with a live preview. |
+| `ftext <query>` | **Full Search:** Finds text inside any file in your project with a syntax-highlighted preview. |
+| `snatch` | **APK Hijacker:** Scans your phone, grabs a raw APK, and pulls it into your current folder. |
+| `warp in` | Opens a visual picker in `/sdcard/` to pull files into Termux. |
+| `warp out` | Opens a visual picker here to push files directly to your Android Downloads. |
+| `peek` | Quick look. `fzf` + `bat` to see inside files without actually opening them. |
+| `host <port>` | Starts a local web server right here. Default is 8080. |
+| `beam` | The Web Terminal. Lets you access your Termux from a PC browser with custom keys. incomplete |
+| `scrub` | deletes cache, temp files, and installer garbage to save space. |
+| `rep <file>` | Map clipboard content to a new command or variable. |
+| `runclip` | Grabs code from your clipboard and runs it as a Python script instantly. |
+| `copyclip <file>` | Dumps file content straight into your Android clipboard. |
+| `reveal` | Network check. Shows your Local IP and Public IP in one go. |
+| `mkcd <dir>` | Makes a folder and jumps inside immediately. |
+| `extract <file>` | file extraction. Works for `.zip`, `.tar.gz`, `.rar`, `.7z`, etc. |
+| `findbig` | Scans for any file over 100MB that's eating your storage. |
+| `z <dir>` | Smart jump. Remembers where you've been so you don't have to type paths. |
+| `..` / `...` | Fast navigation to go back one or two levels. |
+| `q` / `c` | Fast exit and fast clear. |
+
 
 ** For all the available commands head to ...( I'll add a md later , rn I'm lazy )**
 
 
 
-### 🛠 The Arsenal (Tool Manager , still incomplete)
+### 🛠 The Arsenal (Tool Manager , completed)
 I built a CLI interface to let you instantly bulk-install 30+ God-Tier Termux tools (like `apktool`, `lazygit`, `tmate`, `nmap`, etc.) without typing `pkg install` over and over.
 
 Type this to open the menu:
@@ -62,7 +76,7 @@ It installs what you pick and show you a cheat sheet on how to use them immediat
 ### The ASCII System (Kawai)
 I moved away from hardcoded art of motd to a different path, Now you can hot-swap your MOTD visuals.
  * Art Location: ~/.termux/ascii/
- * Adding Art: Drop any .txt file into that folder.
+ * Adding Art: Drop any .txt file into that folder or run `kawai -a <name>` and deop the art then press ctrl + D ( capital D )
  * Execution: Type `kawai` and use arrow keys to preview. Hit Enter to swap the ARCII In MOTD.
 
 # beam  ( Incomplete cuz of ahh , nvm )
@@ -81,7 +95,10 @@ I automated the annoying manual stuff in `.zshrc`.
 - **Auto-LS:** Just `cd` into a directory, and it will automatically list all files visually using `eza`.
 - **`mkcd <folder>`:** Creates a folder and instantly jumps into it.
 - **`extract <file>`:** won't needa remember flags anymore , drop any `.tar.gz`, `.zip`, `.rar`, or `.bz2` into it, and it will figure out the right command to extract it automatically ( hope so )
-
+ ** Auto-LS **: Just cd into a directory, and it lists files visually using eza.
+ ** `atuin` : ** Search through thousands of past commands instantly without clicking Up a hundred times.
+ ** `scrub`:** scrub keeps your storage lean by removing setup trash and cache  [cite: 44-50].
+  
 ### Summary of Changes ( i mean i just updated again cuz old one sucks )
 
 1.  `motd.sh` now uses `dpkg` instead of `pkg`. It will load instantly.
@@ -91,11 +108,10 @@ I automated the annoying manual stuff in `.zshrc`.
 5. **Mess:**  i made a mess while trying to make it better 
 
 ## Credits
-This script is mine which is a simple code/commands, there is no need to even take credit BUT
+These scripts are mine which is a simple code/commands, there is no need to even take credit BUT
 The font (`setlook`) and color (`setstyle`) management scripts are modified versions of tools (termux-nf & termux-colors) originally created by **Md arif** ( ig yes ) 
 
 - Original Project: [termux-desktop](https://github.com/sabamdarif/termux-desktop)
 - Author: [sabamdarif](https://github.com/sabamdarif)
 
 Respect to the open-source community.
-
