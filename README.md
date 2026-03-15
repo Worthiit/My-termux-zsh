@@ -1,7 +1,7 @@
 # My-termux-zsh
 
 <p align="center">
-  <img src="images/preview.jpg" alt="Termux Preview" width="700">
+  <img src="images/preview.jpg" alt="Termux Preview" width="500">
 </p>
 
 
