@@ -60,6 +60,11 @@ zi load marlonrichert/zsh-autocomplete
 
 eval "$(zoxide init zsh)"
 
+# Atuin History Search
+if command -v atuin &> /dev/null; then
+    eval "$(atuin init zsh)"
+fi
+
 alias q="exit"
 alias c="clear"
 alias cls="clear"
@@ -114,6 +119,9 @@ alias texpo="mkdir -p /sdcard/Download/Tmux-expo && cp -r -t /sdcard/Download/Tm
 alias rep="termux-clipboard-get >"
 alias runclip='termux-clipboard-get > temp_script.py && python3 temp_script.py'
 alias ninja="bash ~/ninja.sh"
+alias amv="amv"
+alias ft="ftext"
+alias snatch="snatch"
 
 if command -v batcat &>/dev/null; then
     alias cat='batcat --theme OneHalfDark -p'
