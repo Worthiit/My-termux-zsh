@@ -5,6 +5,8 @@
 ​I was tired of manually installing Zsh, fonts, themes, and plugins every time I reset Termux. I wanted a professional and easy setup that installs everything in one command without wasting storage on a heavy Termux desktop. This is built for personal use, but if you want a terminal that actually fills the gap between Android hardware and a Linux workstation, this is for you my buddy.
 So I built this.
 
+Make sure to download termux and termux api cuz most of my scripts depends on em ( i use GitHub version for both )
+
 **It Includes:**
 - **Zsh & Zinit**: High-speed shell environment using Zinit for asynchronous plugin loading
 - **Powerlevel10k & Meslo NF**: prompt theme paired with a full Nerd Font for icon support 
@@ -19,6 +21,7 @@ So I built this.
 
 
 ## Installation
+
 
 One line command cuz why not ?
 
