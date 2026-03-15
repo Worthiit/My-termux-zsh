@@ -109,7 +109,7 @@ I automated the annoying manual stuff in `.zshrc`.
 5. **Mess:**  i made a mess while trying to make it better 
 
 ## Credits
-These scripts are mine which is a simple code/commands, there is no need to even take credit BUT
+These scripts are mine which are simple code/commands, there is no need to even take credit BUT
 The font (`setlook`) and color (`setstyle`) management scripts are modified versions of tools (termux-nf & termux-colors) originally created by **Md arif** ( ig yes ) 
 
 - Original Project: [termux-desktop](https://github.com/sabamdarif/termux-desktop)
