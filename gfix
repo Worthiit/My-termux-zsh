@@ -1,0 +1,13 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+git config --global core.compression 9
+git config --global core.whitespace error
+git config --global core.preloadindex true
+git config --global status.branch true
+git config --global status.short true
+git config --global push.autoSetupRemote true
+git config --global pull.rebase true
+git config --global merge.conflictStyle zdiff3
+git config --global rebase.autoStash true
+
+echo -e "\e[1;32mGit engine optimized for performance.\e[0m"
