@@ -1,0 +1,118 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+T_PREFIX="/data/data/com.termux/files/usr"
+[[ -z "$PREFIX" ]] && PREFIX="$T_PREFIX"
+MANAGER_HELPER="$PREFIX/bin/termux-setup-package-manager"
+
+if [[ -f "$MANAGER_HELPER" ]]; then
+    source "$MANAGER_HELPER"
+else
+    export TERMUX_APP_PACKAGE_MANAGER="apt"
+fi
+
+MIRROR_BASE_DIR="$PREFIX/etc/termux/mirrors"
+TEMP_DIR="$PREFIX/tmp"
+SPEED_RESULT_FILE="$TEMP_DIR/mirror_speeds.txt"
+
+mkdir -p "$TEMP_DIR"
+
+for pkg in dialog curl; do
+    if ! command -v $pkg >/dev/null; then
+        apt update && apt install -y $pkg
+    fi
+done
+
+unlink_and_link() {
+    local target_link="$PREFIX/etc/termux/chosen_mirrors"
+    [[ -L "$target_link" ]] && unlink "$target_link"
+    ln -s "$1" "$target_link"
+}
+
+test_mirror_speed() {
+    local mirror_file="$1"
+    local mirror_name=$(basename "$mirror_file")
+    local mirror_url=$(grep "MAIN=" "$mirror_file" | cut -d'"' -f2)
+    [[ -z "$mirror_url" ]] && return
+    [[ "$mirror_url" != */ ]] && mirror_url="${mirror_url}/"
+    local test_url="${mirror_url}dists/stable/Release"
+
+    printf "Testing %-25s " "$mirror_name..."
+    
+    local start_time=$(date +%s%3N)
+    if curl -s -L --connect-timeout 2 --max-time 5 -o /dev/null "$test_url"; then
+        local end_time=$(date +%s%3N)
+        local duration=$((end_time - start_time))
+        local speed=$(awk "BEGIN {printf \"%.2f\", $duration/1000}")
+        echo -e "\e[1;32m${speed}s\e[0m"
+        echo "$mirror_file|$mirror_name|$speed" >>"$SPEED_RESULT_FILE"
+    else
+        echo -e "\e[1;31mTIMEOUT\e[0m"
+        echo "$mirror_file|$mirror_name|999.99" >>"$SPEED_RESULT_FILE"
+    fi
+}
+
+exec 3>&1
+CHOICE=$(dialog --clear \
+    --title "REPO MANAGEMENT" \
+    --backtitle "Reinhart Core" \
+    --cancel-label "Exit" \
+    --menu "Select repo logic:" 12 60 3 \
+    "1" "Mirror Group (Rotate several)" \
+    "2" "Single Mirror (Manual pick)" \
+    "3" "Speed Test (Find fastest mirror)" \
+    2>&1 1>&3)
+EXIT_CODE=$?
+exec 3>&-
+
+case $CHOICE in
+    1|2) termux-change-repo ;;
+    3)
+        rm -f "$SPEED_RESULT_FILE"
+        REGIONS=(
+            "All" "Global - Full scan" "on"
+            "Asia" "Asia - Regional" "off"
+            "Europe" "Europe - Regional" "off"
+            "US" "North America - Regional" "off"
+        )
+        
+        exec 3>&1
+        REGION=$(dialog --clear --title "SPEED TEST" --radiolist "Select Region:" 15 60 4 "${REGIONS[@]}" 2>&1 1>&3)
+        exec 3>&-
+        
+        [[ -z "$REGION" ]] && exit 0
+        
+        case $REGION in
+            "All") mapfile -t mirrors < <(find "$MIRROR_BASE_DIR" -type f ! -name "*dpkg*" ! -name "*~") ;;
+            "Asia") mapfile -t mirrors < <(find "$MIRROR_BASE_DIR/asia/" -type f 2>/dev/null) ;;
+            "Europe") mapfile -t mirrors < <(find "$MIRROR_BASE_DIR/europe/" -type f 2>/dev/null) ;;
+            "US") mapfile -t mirrors < <(find "$MIRROR_BASE_DIR/north_america/" -type f 2>/dev/null) ;;
+        esac
+
+        [[ ${#mirrors[@]} -eq 0 ]] && { echo "No mirror files found."; exit 1; }
+
+        clear
+        echo -e "\e[1;36m>>> SCANNING MIRROR LATENCY <<<\e[0m"
+        for m in "${mirrors[@]}"; do test_mirror_speed "$m"; done
+        
+        [[ ! -f "$SPEED_RESULT_FILE" ]] && { echo "Test failed."; exit 1; }
+        sort -t'|' -k3 -n "$SPEED_RESULT_FILE" -o "$SPEED_RESULT_FILE"
+        
+        RESULTS=()
+        while IFS='|' read -r path name speed; do
+            [[ "$speed" == "999.99" ]] && desc="OFFLINE" || desc="SPEED: ${speed}s"
+            RESULTS+=("$name" "$desc")
+        done < "$SPEED_RESULT_FILE"
+        
+        exec 3>&1
+        FINAL=$(dialog --clear --title "RESULTS (FASTEST FIRST)" --menu "Select to apply:" 20 60 10 "${RESULTS[@]}" 2>&1 1>&3)
+        exec 3>&-
+        
+        if [[ -n "$FINAL" ]]; then
+            SEL_PATH=$(grep "|$FINAL|" "$SPEED_RESULT_FILE" | cut -d'|' -f1)
+            unlink_and_link "$SEL_PATH"
+            echo -e "\e[1;32m[+] Applied $FINAL. Updating system...\e[0m"
+            pkg update
+        fi
+        ;;
+    *) exit 0 ;;
+esac
