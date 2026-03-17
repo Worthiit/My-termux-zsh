@@ -117,7 +117,7 @@ I automated the annoying manual stuff in `.zshrc`.
 
 ## Credits
 These scripts are mine which are simple code/commands, there is no need to even take credit BUT
-The font (`setlook`) and color (`setstyle`) management scripts are modified versions of tools (termux-nf & termux-colors) originally created by **Md arif** ( ig yes ) 
+The font (`setlook`) , color (`setstyle`) and termux-change-repo (`setrepo`) management scripts are modified versions of tools (termux-nf , termux-colors & termux-fastest-repo) originally created by **Md arif** ( ig yes ) 
 
 - Original Project: [termux-desktop](https://github.com/sabamdarif/termux-desktop)
 - Author: [sabamdarif](https://github.com/sabamdarif)
