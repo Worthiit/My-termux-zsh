@@ -30,7 +30,7 @@ echo -e "\n${C_CYN}[+] Grabbing the essentials iykyk...${C_RST}"
 $PKGER install -y \
     zsh git gh curl wget ncurses-utils make \
     clang tar bat grep eza fzf openssl $PYTHON_PKG jq fontconfig fontconfig-utils \
-    zoxide $FD_PKG ripgrep neovim fastfetch unzip unrar ttyd iproute2 atuin
+    zoxide $FD_PKG ripgrep neovim fastfetch unzip unrar ttyd iproute2 atuin dialog
 
 if [ "$IS_TERMUX" = true ]; then
     pkg install -y termux-api
@@ -56,8 +56,7 @@ curl -fsSL "$BASE_URL/termux.properties" -o ~/.termux/termux.properties
 curl -fsSL "$BASE_URL/colors.properties" -o ~/.termux/colors.properties
 curl -fsSL "$BASE_URL/config.jsonc" -o ~/.config/fastfetch/config.jsonc
 
-# Syncing the binary arsenal
-for bin in termux-nf seticon setframe setpill kawai beam warp peek scrub host amv ftext snatch; do
+for bin in termux-nf seticon setframe setpill kawai beam warp peek scrub host amv ftext snatch tssh setrepo gfix; do
     curl -fsSL "$BASE_URL/$bin" -o "$PREFIX/bin/$bin"
     chmod +x "$PREFIX/bin/$bin"
 done
