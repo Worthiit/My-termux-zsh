@@ -1,0 +1,27 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+R="\e[1;31m"
+G="\e[1;32m"
+B="\e[1;34m"
+NC="\e[0m"
+
+MARKER="$HOME/.ssh_set"
+
+case $1 in
+    start)
+        [[ ! -f "$MARKER" ]] && { echo -e "${G}Set SSH password:${NC}"; passwd; touch "$MARKER"; }
+        sshd
+        sleep 1
+        IP=$(ifconfig 2>/dev/null | awk '/inet / && !/127.0.0.1/ {print $2}' | head -n 1)
+        echo -e "${G}SSH ACTIVE${NC}"
+        echo -e "${B}Address:${NC} $IP"
+        echo -e "${B}Port:${NC} 8022"
+        echo -e "${B}User:${NC} $(whoami)"
+        ;;
+    stop)
+        pkill sshd && echo -e "${R}SSH STOPPED${NC}" || echo "Not running."
+        ;;
+    *)
+        echo "Usage: tssh [start|stop]"
+        ;;
+esac
