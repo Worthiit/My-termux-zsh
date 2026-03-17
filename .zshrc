@@ -122,6 +122,7 @@ alias ninja="bash ~/ninja.sh"
 alias amv="amv"
 alias ft="ftext"
 alias snatch="snatch"
+alias termux-change-repo="setrepo"
 
 if command -v batcat &>/dev/null; then
     alias cat='batcat --theme OneHalfDark -p'
