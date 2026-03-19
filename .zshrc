@@ -126,6 +126,7 @@ alias termux-change-repo="setrepo"
 alias ssh-start="tssh start"
 alias ssh-stop="tssh stop"
 alias gfix="gfix"
+alias off='uninstall-myzsh'
 
 if command -v batcat &>/dev/null; then
     alias cat='batcat --theme OneHalfDark -p'
