@@ -56,7 +56,7 @@ curl -fsSL "$BASE_URL/termux.properties" -o ~/.termux/termux.properties
 curl -fsSL "$BASE_URL/colors.properties" -o ~/.termux/colors.properties
 curl -fsSL "$BASE_URL/config.jsonc" -o ~/.config/fastfetch/config.jsonc
 
-for bin in termux-nf seticon setframe setpill kawai beam warp peek scrub host amv ftext snatch tssh setrepo gfix; do
+for bin in termux-nf seticon setframe setpill kawai beam warp peek scrub host amv ftext snatch tssh setrepo gfix uninstall-myzsh; do
     curl -fsSL "$BASE_URL/$bin" -o "$PREFIX/bin/$bin"
     chmod +x "$PREFIX/bin/$bin"
 done
