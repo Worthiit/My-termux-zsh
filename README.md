@@ -4,6 +4,11 @@
   <img src="images/preview.jpg" alt="Termux Preview" width="600">
 </p>
 
+<p align="center">
+  <a href="https://github.com/Worthiit/KDE-Termux-/raw/main/audio/welcome.mp3">
+    <img src="https://img.shields.io/badge/PLAY-AUDIO-brightgreen?style=for-the-badge&logo=speaker" alt="Play Audio">
+  </a>
+</p>
 
 
 ​I was tired of manually installing Zsh, fonts, themes, and plugins every time I reset Termux. I wanted a professional and easy setup that installs everything in one command without wasting storage on a heavy Termux desktop. This is built for personal use, but if you want a terminal that actually fills the gap between Android hardware and a Linux workstation, this is for you my buddy.
