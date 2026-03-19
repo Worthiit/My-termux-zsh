@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Playing Welcome Audio...</title>
+    <meta http-equiv="refresh" content="3; url=https://github.com/Worthiit/My-termux-zsh">
+</head>
+<body style="background-color: #0d1117; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif;">
+    <div style="text-align: center;">
+        <h2>Playing Welcome Audio...</h2>
+        <p>Redirecting you back in 3 seconds...</p>
+        <audio id="player" src="audio/welcome.mp3" autoplay controls></audio>
+    </div>
+    <script>
+        var x = document.getElementById("player");
+        x.play().catch(function(error) {
+            console.log("Autoplay blocked. User must interact first.");
+        });
+    </script>
+</body>
+</html>
