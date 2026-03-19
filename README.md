@@ -3,10 +3,9 @@
 <p align="center">
   <img src="images/preview.jpg" alt="Termux Preview" width="600">
 </p>
-
 <p align="center">
-  <a href="https://worthiit.github.io/My-termux-zsh/play.html">
-    <img src="https://img.shields.io/badge/%E2%96%B6%20-LISTEN%20WELCOME-brightgreen?style=for-the-badge" alt="Play">
+  <a href="https://worthiit.github.io/My-termux-zsh/">
+    <img src="https://img.shields.io/badge/%E2%9C%A8-LIVE_PREVIEW_WITH_AUDIO-white?style=for-the-badge&labelColor=black" alt="Live Preview">
   </a>
 </p>
 
