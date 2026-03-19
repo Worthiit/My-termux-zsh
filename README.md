@@ -64,6 +64,7 @@ curl -fsSL https://raw.githubusercontent.com/Worthiit/My-termux-zsh/main/Myzsh.s
 | `z <dir>` | Smart jump. Remembers where you've been so you don't have to type paths. |
 | `..` / `...` | Fast navigation to go back one or two levels. |
 | `q` / `c` | Fast exit and fast clear. |
+| `off` |  Uninstall this whole set-up at once. |
 
 
 ** For all the available commands head to ...( I'll add a md later , rn I'm lazy )**
