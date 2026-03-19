@@ -3,11 +3,6 @@
 <p align="center">
   <img src="images/preview.jpg" alt="Termux Preview" width="600">
 </p>
-<p align="center">
-  <a href="https://worthiit.github.io/My-termux-zsh/">
-    <img src="https://img.shields.io/badge/%E2%9C%A8-LIVE_PREVIEW_WITH_AUDIO-white?style=for-the-badge&labelColor=black" alt="Live Preview">
-  </a>
-</p>
 
 
 ​I was tired of manually installing Zsh, fonts, themes, and plugins every time I reset Termux. I wanted a professional and easy setup that installs everything in one command without wasting storage on a heavy Termux desktop. This is built for personal use, but if you want a terminal that actually fills the gap between Android hardware and a Linux workstation, this is for you my buddy.
