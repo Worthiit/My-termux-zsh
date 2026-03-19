@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Worthiit/My-termux-zsh/raw/main/audio/welcome.mp3">
-    <img src="https://img.shields.io/badge/%E2%96%B6%20-PLAY%20WELCOME%20AUDIO-brightgreen?style=for-the-badge" alt="Play Audio">
+  <a href="https://worthiit.github.io/My-termux-zsh/play.html">
+    <img src="https://img.shields.io/badge/%E2%96%B6%20-LISTEN%20WELCOME-brightgreen?style=for-the-badge" alt="Play">
   </a>
 </p>
 
